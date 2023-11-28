@@ -6,6 +6,9 @@ export interface IListCourse {
     title: string
     duration: number
     teacherId: number
+    teacher: {
+        name: string
+    }
 }
 
 export interface IDetailCourse {
@@ -13,6 +16,9 @@ export interface IDetailCourse {
     title: string
     duration: number
     teacherId: number
+    teacher: {
+        name: string
+    }
 }
 
 type ICourseTotalCount = {
@@ -67,7 +73,7 @@ const getCourseById = async (id: number): Promise<IDetailCourse | Error> => {
 
 }
 
-const createCourse = async (createData: Omit<IDetailCourse, 'id'>): Promise<IDetailCourse | Error> => {
+const createCourse = async (createData: Omit<IDetailCourse, 'id' | 'teacher'>): Promise<IDetailCourse | Error> => {
 
     try {
         const { data } = await api.post('/courses/createCourse', createData)
@@ -85,7 +91,7 @@ const createCourse = async (createData: Omit<IDetailCourse, 'id'>): Promise<IDet
     }
 }
 
-const updateCourse = async (id: number, updateData: Omit<IDetailCourse, 'teacherId'>): Promise<IDetailCourse | Error> => {
+const updateCourse = async (id: number, updateData: Omit<IDetailCourse, 'teacherId' | 'teacher'>): Promise<IDetailCourse | Error> => {
 
     try {
         const { data } = await api.put(`/courses/updateCourse/${id}`, updateData)
