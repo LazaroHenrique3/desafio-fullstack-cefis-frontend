@@ -1,6 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
-import { useParams, redirect, useRouter } from 'next/navigation'
+import { useParams, useRouter } from 'next/navigation'
 import {
     Box,
     Button,
@@ -57,9 +57,10 @@ const Course = () => {
 
                 if (result instanceof Error) {
                     toast.error(result.message)
-                    redirect('/courses')
+                    router.push('/courses')
+                    return
                 }
-                console.log(result)
+
                 setName(result.title)
                 formRef.current?.setData(result)
             } else {
