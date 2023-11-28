@@ -20,6 +20,7 @@ import {
 
 import { IListCourse } from '@/services/api/course/CourseService'
 import { EnvironmentValues } from '@/environment'
+import { RemoveRedEye } from '@mui/icons-material'
 
 interface ICourseTableProps {
     setPage: (newPage: number) => void
@@ -72,6 +73,9 @@ export const CourseTable: React.FC<ICourseTableProps>  = ({setPage, page, totalC
                                 </IconButton>
                                 <IconButton color="primary" onClick={() => router.push(`/course/${row.id}`)}>
                                     <EditIcon />
+                                </IconButton>
+                                <IconButton color="secondary" onClick={() => router.push(`/course/details/${row.id}`)}>
+                                    <RemoveRedEye />
                                 </IconButton>
                             </StyledTableCell>
                         </StyledTableRow>
