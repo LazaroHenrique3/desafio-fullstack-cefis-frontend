@@ -61,7 +61,7 @@ export const CourseTable: React.FC<ICourseTableProps>  = ({setPage, page, totalC
                                 {row.title}
                             </StyledTableCell>
                             <StyledTableCell size="small" align="left">
-                                {row.teacherId}
+                                {row.teacher.name}
                             </StyledTableCell>
                             <StyledTableCell size="small" align="left">
                                 {row.duration}
