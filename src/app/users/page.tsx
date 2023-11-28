@@ -36,6 +36,7 @@ import { EnvironmentValues } from '@/environment'
 import { UseHandleUser } from './hooks/customHooks'
 import { BasePageLayout } from '../BasePageLayout'
 import { AddCircleOutline } from '@mui/icons-material'
+import { convertUserRole } from '@/utils/convertUserRole'
 
 const Users = () => {
     const [rows, setRows] = useState<IListUser[]>([])
@@ -100,7 +101,7 @@ const Users = () => {
                                         #{row.id}
                                     </StyledTableCell>
                                     <StyledTableCell size='small' align="left">{row.name}</StyledTableCell>
-                                    <StyledTableCell size='small' align="left">{row.role}</StyledTableCell>
+                                    <StyledTableCell size='small' align="left">{convertUserRole(row.role)}</StyledTableCell>
                                     <StyledTableCell size='small' align="left">
                                         <IconButton color='error' onClick={() => handleDelete(row.id, row.name)}>
                                             <DeleteIcon />
