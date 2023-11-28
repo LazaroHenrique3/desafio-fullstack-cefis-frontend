@@ -17,6 +17,9 @@ import MenuIcon from '@mui/icons-material/Menu'
 
 import logo from '../../.././public/cefis-white-logo.png'
 
+//Traduções do yup
+import '../../services/yup/TranslationsYup'
+
 interface IPageProps {
     page: string;
     href: string;
