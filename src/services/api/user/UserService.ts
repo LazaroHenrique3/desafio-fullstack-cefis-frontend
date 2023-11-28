@@ -30,9 +30,12 @@ interface ErrorResponse {
     }
 }
 
-const listUser = async (page = 1, filter = '', orderBy = 'desc' ): Promise<IUserTotalCount | Error> => {
+const listUser = async (page = 1, filter = '', orderBy = 'desc', noLimit = false, typeUser = ''): Promise<IUserTotalCount | Error> => {
     try {
-        const { data, headers } = await api.get(`/users/listUser?page=${page}&limit=${EnvironmentValues.LINE_LIMIT}&filter=${filter}&orderBy=${orderBy}`)
+        //Solução temporária para garantir que traga "Todos"
+        const limit = noLimit ? 500 : EnvironmentValues.LINE_LIMIT
+
+        const { data, headers } = await api.get(`/users/listUser?page=${page}&limit=${limit}&filter=${filter}&orderBy=${orderBy}&typeUser=${typeUser}`)
 
         if (data) {
             return {
