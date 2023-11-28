@@ -7,7 +7,7 @@ import {
 export const Loading = () => {
     return (
         <Box width='100%' textAlign='center'>
-            <CircularProgress variant='indeterminate' />
+            <CircularProgress variant='indeterminate' color='secondary'/>
             <Typography>
                 Carregando...
             </Typography>

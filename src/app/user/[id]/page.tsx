@@ -84,7 +84,7 @@ const User = () => {
                     <Grid container direction='column' padding={2} spacing={2}>
                         {isLoading && (
                             <Grid item>
-                                <LinearProgress variant='indeterminate' />
+                                <LinearProgress variant='indeterminate' color='secondary'/>
                             </Grid>
                         )}
 
