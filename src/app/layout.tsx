@@ -1,6 +1,10 @@
 import Footer from '@/components/footer'
 import type { Metadata } from 'next'
 
+//Toast notification
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 import ThemeRegistry from '@/theme/themeRegistry/ThemeRegistry'
 import { Navbar } from '@/components/navbar'
 
@@ -25,6 +29,7 @@ export default function RootLayout({
                         </main>
                         <Footer />
                     </div>
+                    <ToastContainer autoClose={5000}/>
                 </ThemeRegistry>
             </body>
         </html>
