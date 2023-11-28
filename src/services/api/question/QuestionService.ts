@@ -7,6 +7,9 @@ export interface IListQuestion {
     idCourse: number,
     idStudent: number,
     question_text: string
+    student: {
+        name: string
+    }
     Response: IDetailResponse[]
 }
 
@@ -14,7 +17,10 @@ export interface IDetailQuestion {
     id: number
     idCourse: number,
     idStudent: number,
-    question_text: string
+    question_text: string,
+    student: {
+        name: string
+    }
     Response: IDetailResponse[]
 }
 
