@@ -30,7 +30,7 @@ interface ErrorResponse {
     }
 }
 
-const listUser = async (page = 1, filter = '', orderBy = 'asc' ): Promise<IUserTotalCount | Error> => {
+const listUser = async (page = 1, filter = '', orderBy = 'desc' ): Promise<IUserTotalCount | Error> => {
     try {
         const { data, headers } = await api.get(`/users/listUser?page=${page}&limit=${EnvironmentValues.LINE_LIMIT}&filter=${filter}&orderBy=${orderBy}`)
 
