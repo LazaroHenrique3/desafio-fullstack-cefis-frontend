@@ -25,7 +25,7 @@ export default function RootLayout({
                 <ThemeRegistry>
                     <div style={{ display: 'flex', height: '100vh', flexDirection: 'column'}}>
                         <Navbar />
-                        <main style={{ flex: 1 }}>
+                        <main style={{ flex: 1, paddingTop: '40px' }}>
                             {children}
                         </main>
                         <Footer />
