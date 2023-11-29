@@ -7,17 +7,18 @@ import 'react-toastify/dist/ReactToastify.css'
 import { IVFormErrors } from '@/components/forms'
 import { FormHandles } from '@unform/core'
 import { IFormData, formatValidationCreateSchema } from '../validation/Schema'
-import { IDetailQuestion, QuestionService } from '@/services/api/question/QuestionService'
+import { IDetailResponse, ResponseService } from '@/services/api/response/ResponseService'
 
 interface IUseHandleCourseProps {
     setIsLoading: (status: boolean) => void
-    setQuestions: (questions: IDetailQuestion[]) => void
-    questions: IDetailQuestion[]
-    idCourse: number
+    setResponses: (responses: IDetailResponse[]) => void
+    responses: IDetailResponse[]
+    idQuestion: number
+    idTeacher: number
     formRef: React.RefObject<FormHandles>
 }
 
-export const UseHandleQuestion = ({ setIsLoading, setQuestions, questions, idCourse, formRef}: IUseHandleCourseProps) => {
+export const UseHandleResponse = ({ setIsLoading, setResponses, responses, idQuestion, idTeacher, formRef}: IUseHandleCourseProps) => {
 
     const handleSave = async (data: IFormData) => {
         try {
@@ -25,8 +26,8 @@ export const UseHandleQuestion = ({ setIsLoading, setQuestions, questions, idCou
 
             setIsLoading(true)
 
-            //Irá retornar a pergunta criada
-            const result = await QuestionService.createQuestion({idCourse, ...validateData})
+            //Irá retornar a resposta criada
+            const result = await ResponseService.createResponse(idTeacher, {idQuestion, ...validateData})
             setIsLoading(false)
 
             if (result instanceof Error) {
@@ -34,14 +35,13 @@ export const UseHandleQuestion = ({ setIsLoading, setQuestions, questions, idCou
                 return
             }
 
-            const updatedQuestions = [result, ...questions]
+            const updatedResponses = [result, ...responses]
 
-            toast.success('Pergunta salva com sucesso!')
+            toast.success('Resposta salva com sucesso!')
             formRef.current?.setData({
-                question_text: '',
-                idStudent: ''
+                response_text: ''
             })
-            setQuestions(updatedQuestions)
+            setResponses(updatedResponses)
         } catch (errors) {
             const errorsYup: yup.ValidationError = errors as yup.ValidationError
 
