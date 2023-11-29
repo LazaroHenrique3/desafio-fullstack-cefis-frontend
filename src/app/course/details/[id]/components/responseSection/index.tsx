@@ -71,7 +71,7 @@ export const ResponseSection: React.FC<IResponseSectionProps> = ({ questionRespo
 
             {/* Listagem de respostas */}
             {(responses.length === 0) ? (
-                <>Aguardando resposta...</>
+                <Box margin={1}>Aguardando resposta...</Box>
             ) : (
                 <Box margin={1}>
                     <Typography sx={{ fontWeight: '400' }}>
