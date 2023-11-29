@@ -1,9 +1,6 @@
 'use client'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-//Toast notification
-import { toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
 //Material 
 import {
     Button,
@@ -35,7 +32,6 @@ const Users = () => {
             setIsLoading(false)
 
             if (rowsData instanceof Error) {
-                toast.error(rowsData.message)
                 return
             }
 

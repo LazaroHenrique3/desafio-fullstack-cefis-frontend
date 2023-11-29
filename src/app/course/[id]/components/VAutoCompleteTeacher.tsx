@@ -1,9 +1,6 @@
 import { useEffect, useMemo, useState } from 'react'
 import { Autocomplete, CircularProgress, TextField } from '@mui/material'
 
-import { toast } from 'react-toastify'
-import 'react-toastify/dist/ReactToastify.css'
-
 import { useField } from '@unform/core'
 import { UserService } from '@/services/api/user/UserService'
 
@@ -42,7 +39,6 @@ export const VAutoCompleteTeacher: React.FC<VAutoCompleteTeacherProps> = ({ isEx
             setIsLoading(false)
 
             if (result instanceof Error) {
-                toast.error(result.message)
                 return
             }
 
