@@ -43,7 +43,7 @@ const Courses = () => {
     }, [page])
 
     //hooks personalizados
-    const { handleDelete } = UseHandleCourse({ setRows, rows })
+    const { handleDelete } = UseHandleCourse({ setRows, rows, setTotalCount, totalCount })
 
     return (
         <BasePageLayout

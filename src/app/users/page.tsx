@@ -43,7 +43,7 @@ const Users = () => {
     }, [page])
 
     //hooks personalizados
-    const { handleDelete } = UseHandleUser({ setRows, rows })
+    const { handleDelete } = UseHandleUser({ setRows, rows, setTotalCount, totalCount })
 
     return (
         <BasePageLayout
