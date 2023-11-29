@@ -2,14 +2,18 @@ import { IDetailQuestion } from '@/services/api/question/QuestionService'
 import {
     Box,
     Typography,
-    Paper
+    Paper,
 } from '@mui/material'
+import { CommentComponent } from '../commentComponent'
+import { ResponseSection } from '../responseSection'
 
 interface IListQuestionsSection {
     questions: IDetailQuestion[]
+    nameTeacher: string
+    idTeacher: number
 }
 
-export const ListQuestionsSection: React.FC<IListQuestionsSection> = ({ questions }) => {
+export const ListQuestionsAndResponsesSection: React.FC<IListQuestionsSection> = ({ questions, nameTeacher, idTeacher }) => {
 
     return (
         <Box width='100%' marginTop={3}>
@@ -28,13 +32,18 @@ export const ListQuestionsSection: React.FC<IListQuestionsSection> = ({ question
             ) : (
                 <Box display='flex' flexDirection='column' gap={2}>
                     {questions.map((question) => (
-                        <Box key={question.id} component={Paper} padding={2}>
-                            <Typography sx={{ fontWeight: '600' }}>
-                                - Aluno: {question.student.name}
-                            </Typography>
-                            <Typography>
-                                {question.question_text}
-                            </Typography>
+                        <Box key={question.id} component={Paper}>
+                            <CommentComponent 
+                                key={question.id} 
+                                labelName='Aluno' 
+                                name={question.student.name} 
+                                text={question.question_text} />
+
+                            <ResponseSection 
+                                idQuestion={question.id} 
+                                questionResponses={question.Response} 
+                                nameTeacher={nameTeacher} 
+                                idTeacher={idTeacher}/>
                         </Box>
                     ))}
                 </Box>

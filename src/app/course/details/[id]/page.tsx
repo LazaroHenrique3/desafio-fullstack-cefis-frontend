@@ -13,7 +13,7 @@ import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 import { CreateQuestionSection } from './components/createQuestionSection'
-import { ListQuestionsSection } from './components/listQuestions'
+import { ListQuestionsAndResponsesSection } from './components/listQuestionsAndResponsesSection'
 import { CourseService, IDetailCourse } from '@/services/api/course/CourseService'
 import { Loading } from '@/components/loading'
 import { IDetailQuestion } from '@/services/api/question/QuestionService'
@@ -97,7 +97,10 @@ const CourseDetails = () => {
                         <CreateQuestionSection questions={questions} setQuestions={setQuestions} idCourse={Number(id)} />
 
                         <Divider />
-                        <ListQuestionsSection questions={questions} />
+                        <ListQuestionsAndResponsesSection 
+                            questions={questions} 
+                            nameTeacher={course.teacher.name} 
+                            idTeacher={course.teacherId}/>
                     </>
                 )}
             </Box>
