@@ -4,6 +4,9 @@
 
 Aplicação desenvolvida como parte do desafio técnico FullStack proposto pela CEFIS. Consome dados da API construída também como parte do desafio.
 
+### 🌐 Acesse o deploy da aplicação: 
+* **Deploy: <a href="https://desafio-fullstack-cefis-frontend-c9axu3ox3-lazarohenrique3.vercel.app/">CEFIS Cursos</a>**
+
 ### 👀 API 
 * **BackEnd: <a href="https://github.com/LazaroHenrique3/desafio-fullstack-cefis-api/tree/main">Desafio FullStack - BackEnd</a>**
 
