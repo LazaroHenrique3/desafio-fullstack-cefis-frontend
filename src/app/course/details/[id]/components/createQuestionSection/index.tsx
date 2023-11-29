@@ -1,4 +1,5 @@
-import { VForm, VTextField, useVForm } from '@/components/forms'
+'use client'
+import { useState } from 'react'
 import {
     Box,
     Button,
@@ -7,18 +8,34 @@ import {
     Typography,
     Paper
 } from '@mui/material'
+import { VForm, VTextField, useVForm } from '@/components/forms'
 import { VAutoCompleteStudent } from '../VAutoCompleteStudent'
+import { IDetailQuestion } from '@/services/api/question/QuestionService'
+import { UseHandleQuestion } from './hooks/customHooks'
 
 interface ICreateQuestionSectionProps {
-    isLoading: boolean
+    setQuestions: (updatedQuestions: IDetailQuestion[]) => void
+    questions: IDetailQuestion[]
+    idCourse: number
 }
 
-export const CreateQuestionSection: React.FC<ICreateQuestionSectionProps> = ({ isLoading }) => {
+export const CreateQuestionSection: React.FC<ICreateQuestionSectionProps> = ({ setQuestions, questions, idCourse }) => {
     const { formRef } = useVForm('formRef')
+
+    const [isLoading, setIsLoading] = useState<boolean>(false)
+
+    //Hooks personalizados
+    const { handleSave } = UseHandleQuestion({ 
+        setIsLoading, 
+        setQuestions,
+        questions,
+        idCourse, 
+        formRef,
+    })
 
     return (
         <Box width='100%' marginTop={3}>
-            <VForm ref={formRef} onSubmit={() => console.log()}>
+            <VForm ref={formRef} onSubmit={handleSave}>
 
                 <Box margin={1}>
                     <Typography variant='h5'>

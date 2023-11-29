@@ -1,5 +1,4 @@
 import { api } from '../axiosConfig'
-import { IDetailCourse } from '../course/CourseService'
 import { IDetailResponse } from '../response/ResponseService'
 
 export interface IListQuestion {
@@ -34,7 +33,7 @@ interface ErrorResponse {
     }
 }
 
-const createQuestion = async (createData: Omit<IDetailCourse, 'id' | 'teacher'>): Promise<IDetailCourse | Error> => {
+const createQuestion = async (createData: Omit<IDetailQuestion, 'id' | 'student' | 'Response'>): Promise<IDetailQuestion | Error> => {
 
     try {
         const { data } = await api.post('/questions/createQuestion', createData)

@@ -14,8 +14,9 @@ import 'react-toastify/dist/ReactToastify.css'
 
 import { CreateQuestionSection } from './components/createQuestionSection'
 import { ListQuestionsSection } from './components/listQuestions'
-import { CourseService, IDetailCourseWithAllProps } from '@/services/api/course/CourseService'
+import { CourseService, IDetailCourse } from '@/services/api/course/CourseService'
 import { Loading } from '@/components/loading'
+import { IDetailQuestion } from '@/services/api/question/QuestionService'
 
 interface IInfoCourseProps {
     label: string
@@ -38,7 +39,8 @@ const CourseDetails = () => {
 
     const [isLoading, setIsLoading] = useState(false)
 
-    const [course, setCourse] = useState<IDetailCourseWithAllProps>({} as IDetailCourseWithAllProps)
+    const [course, setCourse] = useState<IDetailCourse>({} as IDetailCourse)
+    const [questions, setQuestions] = useState<IDetailQuestion[]>({} as IDetailQuestion[])
 
     useEffect(() => {
         const fetchData = async () => {
@@ -53,7 +55,10 @@ const CourseDetails = () => {
                 return
             }
 
-            setCourse(resultCourse)
+            const { Question: questions, ...courseInfo } = resultCourse
+
+            setCourse(courseInfo)
+            setQuestions(questions)
         }
 
         fetchData()
@@ -89,10 +94,10 @@ const CourseDetails = () => {
                         </Box>
 
                         <Divider />
-                        <CreateQuestionSection isLoading={isLoading} />
+                        <CreateQuestionSection questions={questions} setQuestions={setQuestions} idCourse={Number(id)} />
 
                         <Divider />
-                        <ListQuestionsSection questions={course.Question} />
+                        <ListQuestionsSection questions={questions} />
                     </>
                 )}
             </Box>

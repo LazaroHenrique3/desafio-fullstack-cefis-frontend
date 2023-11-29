@@ -30,7 +30,7 @@ export const ListQuestionsSection: React.FC<IListQuestionsSection> = ({ question
                     {questions.map((question) => (
                         <Box key={question.id} component={Paper} padding={2}>
                             <Typography sx={{ fontWeight: '600' }}>
-                                -{question.student.name}
+                                - Aluno: {question.student.name}
                             </Typography>
                             <Typography>
                                 {question.question_text}
