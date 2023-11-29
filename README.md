@@ -16,7 +16,7 @@ Aplicação desenvolvida como parte do desafio técnico FullStack proposto pela 
 
 ### Requisitos
 
-* **Node.js 16.17^
+* **Node.js 16.17^**
 
 ### Instruções
 
