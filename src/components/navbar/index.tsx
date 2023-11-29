@@ -94,7 +94,14 @@ export const Navbar = () => {
                             }}
                         >
                             {pages.map((page) => (
-                                <Link key={page.page} href={page.href}>
+                                <Link
+                                    key={page.page}
+                                    href={page.href}
+                                    style={{
+                                        textDecoration: 'none',
+                                        color: 'inherit'
+                                    }}
+                                >
                                     <MenuItem onClick={handleCloseNavMenu}>
                                         <Typography textAlign="center">{page.page}</Typography>
                                     </MenuItem>
@@ -123,7 +130,13 @@ export const Navbar = () => {
                     </Typography>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         {pages.map((page) => (
-                            <Link key={page.page} href={page.href}>
+                            <Link key={page.page}
+                                href={page.href}
+                                style={{
+                                    textDecoration: 'none',
+                                    color: 'inherit'
+                                }}
+                            >
                                 <Button
                                     onClick={handleCloseNavMenu}
                                     sx={{ my: 2, color: 'white', display: 'block' }}
