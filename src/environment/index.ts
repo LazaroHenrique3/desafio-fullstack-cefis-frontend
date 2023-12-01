@@ -2,7 +2,7 @@ export const EnvironmentValues = {
     /**
     * Define a quantidade linhas a ser carregada por padrão nas listagens.
     */
-    LINE_LIMIT: 5,
+    LINE_LIMIT: 6,
     /**
     * Placeholder exibido nos inputs de pesquisa.
     */
