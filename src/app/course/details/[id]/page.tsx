@@ -86,7 +86,7 @@ const CourseDetails = () => {
                                     variant="contained"
                                     color="secondary"
                                     sx={{ width: '80px' }}
-                                    onClick={() => router.push('/courses')}
+                                    onClick={() => router.push('/')}
                                 >
                                     Voltar
                                 </Button>
