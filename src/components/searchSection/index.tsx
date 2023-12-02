@@ -13,6 +13,11 @@ interface ISearchSectionProps {
 const SearchSection: React.FC<ISearchSectionProps> = ({ isExternalLoading, setExternalSearchText }) => {
     const [inputText, setInputText] = useState<string>('')
 
+    const handleRefreshResult = () => {
+        setExternalSearchText('')
+        setInputText('')
+    }
+
     return (
         <Box display='flex' gap={1} justifyContent='center' flexWrap='wrap'>
             <TextField
@@ -39,7 +44,7 @@ const SearchSection: React.FC<ISearchSectionProps> = ({ isExternalLoading, setEx
                     type='submit'
                     variant='outlined'
                     disabled={isExternalLoading}
-                    onClick={() => setExternalSearchText('')}>
+                    onClick={() => handleRefreshResult()}>
                     <Refresh />
                 </Button>
             </Box>
