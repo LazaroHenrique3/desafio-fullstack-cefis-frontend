@@ -43,30 +43,41 @@ const Home = () => {
     }, [page, searchText])
 
     return (
-        <Box width='100%' textAlign='center' paddingTop={5}>
+        <Box width='100%' textAlign='center' padding={3} paddingTop={5}>
             <Typography variant='h5' marginBottom={5}>
-                BEM-VINDO AO FUTURO DO CONHECIMENTO.
+                BEM-VINDO AO FUTURO DO CONHECIMENTO
+            </Typography>
+
+            <Typography variant='h6' color='secondary' fontWeight='600' marginBottom={5}>
+                CONHEÇA NOSSOS CURSOS
             </Typography>
 
             <Grid container padding={2} spacing={5}>
+                {/* Area de pesquisa, basicamente vai alterar o searchText, que irá disparar o useEffect*/}
+                <Grid container item xs={12} justifyContent='end'>
+                    <SearchSection isExternalLoading={isLoading} setExternalSearchText={setSearchText} />
+                </Grid>
+
                 {(isLoading) ? (
                     /* Condicional para caso esteja em fase de loading */
                     <Grid container item xs={12} justifyContent='center'>
                         <Loading />
                     </Grid>
                 ) : (courses.length === 0) ? (
-                    /* Condiciconal para caso não exista cursos cadastrados */
+                    /* Condiciconal para caso não exista cursos cadastrados ou encontrados */
                     <Grid container item xs={12} justifyContent='center'>
                         <Typography variant='h6' marginTop={5}>
-                            No momento não há cursos disponíveis, mas nossos profissionais estão empenhados nisso! 🤝
+                            No momento não foram encontrados cursos disponíveis, mas nossos profissionais estão empenhados nisso! 🤝
                         </Typography>
                     </Grid>
 
                 ) : (
                     <>
-                        {/* Area de pesquisa, basicamente vai alterar o searchText, que irá disparar o useEffect*/}
-                        <Grid container item xs={12} justifyContent='end'>
-                            <SearchSection isExternalLoading={isLoading} setExternalSearchText={setSearchText}/>
+                        {/* Contagem de total de resultados encontrados */}
+                        <Grid container item xs={12} justifyContent='center'>
+                            <Typography>
+                                ({totalCount}) resultados no total.
+                            </Typography>
                         </Grid>
 
                         {/* Listagens dos cards de cursos */}
@@ -81,7 +92,7 @@ const Home = () => {
                     </>
                 )}
 
-                {/* Relacionado a paginação, que no caso eu adiciono mais cursos ao state */}
+                {/* Relacionado a paginação*/}
                 {(totalCount > 0 && totalCount > EnvironmentValues.LINE_LIMIT && totalCount !== courses.length) && (
                     <Grid container item xs={12} justifyContent='center'>
                         <Pagination
