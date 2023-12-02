@@ -12,11 +12,9 @@ import {
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-import { CreateQuestionSection } from './components/createQuestionSection'
-import { ListQuestionsAndResponsesSection } from './components/listQuestionsAndResponsesSection'
+import { QuestionsAndResponsesSection } from './components/questionsAndResponsesSection'
 import { CourseService, IDetailCourse } from '@/services/api/course/CourseService'
 import { Loading } from '@/components/loading'
-import { IDetailQuestion } from '@/services/api/question/QuestionService'
 
 interface IInfoCourseProps {
     label: string
@@ -36,12 +34,11 @@ const CourseDetails = () => {
     const { id } = params
 
     const router = useRouter()
-
     const [isLoading, setIsLoading] = useState(false)
 
     const [course, setCourse] = useState<IDetailCourse>({} as IDetailCourse)
-    const [questions, setQuestions] = useState<IDetailQuestion[]>({} as IDetailQuestion[])
 
+    /* Buscando o curso através do id */
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true)
@@ -55,10 +52,7 @@ const CourseDetails = () => {
                 return
             }
 
-            const { Question: questions, ...courseInfo } = resultCourse
-
-            setCourse(courseInfo)
-            setQuestions(questions)
+            setCourse(resultCourse)
         }
 
         fetchData()
@@ -71,6 +65,7 @@ const CourseDetails = () => {
                     <Loading />
                 ) : (
                     <>
+                        {/* Seção de informações do curso */}
                         <Box display='flex' justifyContent='space-between'>
                             <Box>
                                 <Typography color='secondary' variant='h4'>
@@ -93,12 +88,10 @@ const CourseDetails = () => {
                             </Box>
                         </Box>
 
+                        {/* Seção de listagem de perguntas e respostas */}
                         <Divider />
-                        <CreateQuestionSection questions={questions} setQuestions={setQuestions} idCourse={Number(id)} />
-
-                        <Divider />
-                        <ListQuestionsAndResponsesSection 
-                            questions={questions} 
+                        <QuestionsAndResponsesSection 
+                            idCourse={Number(id)}
                             nameTeacher={course.teacher.name} 
                             idTeacher={course.teacherId}/>
                     </>
