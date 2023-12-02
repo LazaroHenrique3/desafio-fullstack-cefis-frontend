@@ -1,7 +1,5 @@
 import { EnvironmentValues } from '../../../environment'
 import { api } from '../axiosConfig'
-import { IDetailQuestion } from '../question/QuestionService'
-
 
 export interface IListCourse {
     id: number
@@ -21,17 +19,6 @@ export interface IDetailCourse {
     teacher: {
         name: string
     }
-}
-
-export interface IDetailCourseWithAllProps {
-    id: number
-    title: string
-    duration: number
-    teacherId: number
-    teacher: {
-        name: string
-    }
-    Question: IDetailQuestion[]
 }
 
 type ICourseTotalCount = {
@@ -78,7 +65,7 @@ const listCourse = async (page = 1, filter = '', orderBy = 'desc' ): Promise<ICo
     }
 }
 
-const getCourseById = async (id: number): Promise<IDetailCourseWithAllProps | Error> => {
+const getCourseById = async (id: number): Promise<IDetailCourse | Error> => {
 
     try {
         const { data } = await api.get(`/courses/listCourse/${id}`)
