@@ -26,7 +26,8 @@ interface ErrorResponse {
             errors?: {
                 default?: string
             }
-        }
+        },
+        status?: number
     }
 }
 
@@ -48,6 +49,15 @@ const listUser = async (page = 1, filter = '', orderBy = 'desc', noLimit = false
 
     } catch (error) {
         console.error(error)
+
+        //Tratando respostas 404, para pode lidar melhor no front
+        if ((error as ErrorResponse).response?.status) {
+            return {
+                data: [],
+                totalCount: 0
+            }
+        }
+
         return new Error((error as ErrorResponse).response?.data?.errors?.default || 'Erro ao listar registros.')
     }
 }
