@@ -20,7 +20,7 @@ interface ICardCoursesProps {
 
 export const CardCourses: React.FC<ICardCoursesProps> = ({ title, duration, teacherName, courseId, router }) => {
     return (
-        <Grid container item xs={12} sm={6} md={4} lg={3} xl={2} justifyContent='center'>
+        <Grid container item xs={12} sm={6} md={4} lg={3} justifyContent='center'>
             <Card sx={{ width: 280, height: '100%' }}>
                 <Box height='100%' display='flex' flexDirection='column' justifyContent='space-between'>
                     <CardContent>
