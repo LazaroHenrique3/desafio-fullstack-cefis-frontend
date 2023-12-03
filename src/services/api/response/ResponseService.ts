@@ -3,13 +3,13 @@ import { api } from '../axiosConfig'
 
 export interface IListResponse {
     id: number,
-    idResponse: number,
+    idQuestion: number,
     response_text: string
 }
 
 export interface IDetailResponse {
     id: number,
-    idResponse: number,
+    idQuestion: number,
     response_text: string
 }
 
@@ -57,10 +57,10 @@ const listResponse = async (page = 1, idQuestion: number, orderBy = 'desc' ): Pr
     }
 }
 
-const createResponse = async (idResponse: number, createData: Omit<IDetailResponse, 'id' >): Promise<IDetailResponse | Error> => {
+const createResponse = async (idTeacher: number, createData: Omit<IDetailResponse, 'id' >): Promise<IDetailResponse | Error> => {
 
     try {
-        const { data } = await api.post(`/responses/createResponse/${idResponse}`, createData)
+        const { data } = await api.post(`/responses/createResponse/${idTeacher}`, createData)
 
         if (data) {
             return data
@@ -74,6 +74,7 @@ const createResponse = async (idResponse: number, createData: Omit<IDetailRespon
 
     }
 }
+ 
 
 export const ResponseService = {
     listResponse,
