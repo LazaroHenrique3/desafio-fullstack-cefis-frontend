@@ -6,13 +6,19 @@ export type TUserRole = 'STUDENT' | 'TEACHER';
 export interface IListUser {
     id: number
     name: string
+    email: string
     role: TUserRole
 }
 
 export interface IDetailUser {
     id: number
     name: string
+    email: string
     role: TUserRole
+}
+
+export interface IUserWithPassword extends IDetailUser {
+    password: string,
 }
 
 type IUserTotalCount = {
@@ -30,6 +36,24 @@ interface ErrorResponse {
         status?: number
     }
 }
+
+/* const signInUser = async (createData: Omit<IDetailUser, 'id'>): Promise<IDetailUser | Error> => {
+
+    try {
+        const { data } = await api.post('/users/createUser', createData)
+
+        if (data) {
+            return data
+        }
+
+        return new Error('Erro ao criar registro.')
+
+    } catch (error) {
+        console.error(error)
+        return new Error((error as ErrorResponse).response?.data?.errors?.default || 'Erro ao criar registro.')
+
+    }
+} */
 
 const listUser = async (page = 1, filter = '', orderBy = 'desc', noLimit = false, typeUser = ''): Promise<IUserTotalCount | Error> => {
     try {
