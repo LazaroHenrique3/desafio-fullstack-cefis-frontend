@@ -21,6 +21,14 @@ export interface IUserWithPassword extends IDetailUser {
     password: string,
 }
 
+//Interface que representa os valores retornados no login
+export interface IUserSignInResponse {
+    name: string,
+    email: string,
+    typeUser: string,
+    accessToken: string
+}
+
 type IUserTotalCount = {
     data: IListUser[],
     totalCount: number
@@ -37,10 +45,10 @@ interface ErrorResponse {
     }
 }
 
-/* const signInUser = async (createData: Omit<IDetailUser, 'id'>): Promise<IDetailUser | Error> => {
+const signInUser = async (signInData: Omit<IUserWithPassword, 'id' | 'name' | 'role'>): Promise<IUserSignInResponse | Error> => {
 
     try {
-        const { data } = await api.post('/users/createUser', createData)
+        const { data } = await api.post('/users/signInUser', signInData)
 
         if (data) {
             return data
@@ -53,7 +61,7 @@ interface ErrorResponse {
         return new Error((error as ErrorResponse).response?.data?.errors?.default || 'Erro ao criar registro.')
 
     }
-} */
+}
 
 const listUser = async (page = 1, filter = '', orderBy = 'desc', noLimit = false, typeUser = ''): Promise<IUserTotalCount | Error> => {
     try {
@@ -152,6 +160,7 @@ const deleteUser = async (id: number): Promise<void | Error> => {
 }
 
 export const UserService = {
+    signInUser,
     listUser,
     getUserById,
     createUser,

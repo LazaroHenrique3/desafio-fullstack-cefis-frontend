@@ -1,6 +1,3 @@
-import Footer from '@/components/footer'
-import { Navbar } from '@/components/navbar'
-
 import type { Metadata } from 'next'
 
 //Toast notification
@@ -8,6 +5,7 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 import ThemeRegistry from '@/theme/themeRegistry/ThemeRegistry'
+import { NextAuthSessionProvider } from '@/providers/sessionProvider'
 
 export const metadata: Metadata = {
     title: 'CEFIS Cursos',
@@ -21,17 +19,13 @@ export default function RootLayout({
 }) {
     return (
         <html lang='pt-br'>
-            <body style={{ margin: 0, padding: 0, boxSizing: 'border-box'}}>
-                <ThemeRegistry>
-                    <div style={{ display: 'flex', height: '100vh', flexDirection: 'column'}}>
-                        <Navbar />
-                        <main style={{ flex: 1, paddingTop: '40px' }}>
-                            {children}
-                        </main>
-                        <Footer />
-                    </div>
-                    <ToastContainer autoClose={5000}/>
-                </ThemeRegistry>
+            <body style={{ margin: 0, padding: 0, boxSizing: 'border-box' }}>
+                <NextAuthSessionProvider>
+                    <ThemeRegistry>
+                        {children}
+                        <ToastContainer autoClose={5000} />
+                    </ThemeRegistry>
+                </NextAuthSessionProvider>
             </body>
         </html>
     )

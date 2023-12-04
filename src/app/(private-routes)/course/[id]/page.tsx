@@ -13,7 +13,7 @@ import {
 import { toast } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
-import { BasePageLayout } from '@/app/BasePageLayout'
+import { BasePageLayout } from '@/app/(private-routes)/BasePageLayout'
 import {
     VForm,
     VTextField,
