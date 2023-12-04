@@ -1,4 +1,5 @@
 export * from './VTextField'
+export * from './VTextFieldPassword'
 export * from './VSelect'
 export * from './VScope'
 export * from './useVForm'
