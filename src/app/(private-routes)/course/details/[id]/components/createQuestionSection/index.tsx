@@ -9,7 +9,6 @@ import {
     Paper
 } from '@mui/material'
 import { VForm, VTextField, useVForm } from '@/components/forms'
-import { VAutoCompleteStudent } from '../VAutoCompleteStudent'
 import { IDetailQuestion } from '@/services/api/question/QuestionService'
 import { UseHandleQuestion } from './hooks/customHooks'
 
@@ -17,19 +16,21 @@ interface ICreateQuestionSectionProps {
     setQuestions: (updatedQuestions: IDetailQuestion[]) => void
     questions: IDetailQuestion[]
     idCourse: number
+    idStudent: number
 }
 
-export const CreateQuestionSection: React.FC<ICreateQuestionSectionProps> = ({ setQuestions, questions, idCourse }) => {
+export const CreateQuestionSection: React.FC<ICreateQuestionSectionProps> = ({ setQuestions, questions, idCourse, idStudent }) => {
     const { formRef } = useVForm('formRef')
 
     const [isLoading, setIsLoading] = useState<boolean>(false)
 
     //Hooks personalizados
-    const { handleSave } = UseHandleQuestion({ 
-        setIsLoading, 
+    const { handleSave } = UseHandleQuestion({
+        setIsLoading,
         setQuestions,
         questions,
-        idCourse, 
+        idCourse,
+        idStudent,
         formRef,
     })
 
@@ -52,28 +53,24 @@ export const CreateQuestionSection: React.FC<ICreateQuestionSectionProps> = ({ s
                         )}
 
                         <Grid container item direction='row' spacing={2}>
-                            <Grid item xs={12} sm={12} md={6} lg={3} xl={3}>
-                                <VAutoCompleteStudent isExternalLoading={isLoading} />
+                            <Grid item xs={12} sm={12} md={6} lg={4} xl={4}>
+                                <VTextField fullWidth size='small' label='Pergunta' name='question_text' disabled={isLoading} />
                             </Grid>
 
                             <Grid item xs={12} sm={12} md={6} lg={4} xl={4}>
-                                <VTextField fullWidth label='Pergunta' name='question_text' disabled={isLoading} />
+                                <Button
+                                    variant="contained"
+                                    color="secondary"
+                                    sx={{ width: '150px' }}
+                                    type='submit'
+                                >
+                                    Perguntar
+                                </Button>
                             </Grid>
                         </Grid>
 
                     </Grid>
 
-                </Box>
-
-                <Box margin={1} display='flex' gap={5} padding={2} component={Paper} variant='outlined'>
-                    <Button
-                        variant="contained"
-                        color="secondary"
-                        sx={{ width: '150px' }}
-                        type='submit'
-                    >
-                        Perguntar
-                    </Button>
                 </Box>
             </VForm>
         </Box>
