@@ -31,7 +31,7 @@ export const CardCourses: React.FC<ICardCoursesProps> = ({ title, duration, teac
                             Duração: {duration} HRs
                         </Typography>
                         <Typography fontSize={18} variant="body2">
-                            Professor: {teacherName}
+                            Professor(a): {teacherName}
                         </Typography>
                     </CardContent>
 
