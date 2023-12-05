@@ -1,4 +1,4 @@
-import NextAuth, {NextAuthOptions} from 'next-auth'
+import NextAuth, { NextAuthOptions } from 'next-auth'
 import CredentialsProvider from 'next-auth/providers/credentials'
 
 import { UserService } from '@/services/api/user/UserService'
@@ -9,14 +9,14 @@ const nextAuthOptions: NextAuthOptions = {
         CredentialsProvider({
             name: 'credentials',
             credentials: {
-                email: { label: 'email', type: 'text'},
-                password: { label: 'password', type: 'password'}
+                email: { label: 'email', type: 'text' },
+                password: { label: 'password', type: 'password' }
             },
 
             // eslint-disable-next-line 
             async authorize(credentials, req): Promise<any> {
                 //Caso venham como undefined eu retorno
-                if(!credentials?.email && !credentials?.password) return
+                if (!credentials?.email && !credentials?.password) return
 
                 const response = await UserService.signInUser({
                     email: credentials.email,
@@ -24,17 +24,28 @@ const nextAuthOptions: NextAuthOptions = {
                 })
 
                 //Verificando se foi retornado erro
-                if(response instanceof Error){
+                if (response instanceof Error) {
                     //Lançando o erro para posteriormente pegar a mensagem dele
                     throw new Error(response.message)
                 }
-                
+
                 return response
             },
         })
     ],
     pages: {
         signIn: '/'
+    },
+    callbacks: {
+        async jwt({ token, user }) {
+            user && (token.user = user)
+            return token
+        },
+        async session({ session, token }) {
+            // eslint-disable-next-line 
+            session = token.user as any
+            return session
+        }
     }
 }
 
