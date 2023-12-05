@@ -14,12 +14,12 @@ interface IUseHandleCourseProps {
     setResponses: (responses: IDetailResponse[]) => void
     responses: IDetailResponse[]
     idQuestion: number
-    idTeacher: number
+    idUser: number
     formRef: React.RefObject<FormHandles>
 }
 
 
-export const UseHandleResponse = ({ setIsLoading, setResponses, responses, idQuestion, idTeacher, formRef}: IUseHandleCourseProps) => {
+export const UseHandleResponse = ({ setIsLoading, setResponses, responses, idQuestion, idUser, formRef}: IUseHandleCourseProps) => {
 
     const handleSave = async (data: IFormData) => {
         try {
@@ -28,7 +28,7 @@ export const UseHandleResponse = ({ setIsLoading, setResponses, responses, idQue
             setIsLoading(true)
 
             //Irá retornar a resposta criada
-            const result = await ResponseService.createResponse(idTeacher, {idQuestion, ...validateData})
+            const result = await ResponseService.createResponse(idUser, {idQuestion, ...validateData})
             setIsLoading(false)
 
             if (result instanceof Error) {
