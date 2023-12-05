@@ -60,7 +60,7 @@ const User = () => {
                     router.push('/users')
                     return
                 }
-                console.log(result)
+
                 setName(result.name)
                 formRef.current?.setData(result)
             } else {
