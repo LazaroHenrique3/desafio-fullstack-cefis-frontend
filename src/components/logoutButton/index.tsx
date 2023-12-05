@@ -3,25 +3,33 @@ import { useRouter } from 'next/navigation'
 import { Button } from '@mui/material'
 import { LogoutRounded } from '@mui/icons-material'
 
-export const LogoutButton = () => {
+interface ILogoutButtonProps {
+    textButton?: string
+}
+
+export const LogoutButton: React.FC<ILogoutButtonProps> = ({ textButton }) => {
     const router = useRouter()
 
     async function logout() {
-        await signOut({
-            redirect: false
-        })
+        const confirmLogout = confirm('Realmente deseja sair?')
 
-        router.replace('/login')
+        if (confirmLogout) {
+            await signOut({
+                redirect: false
+            })
+
+            router.replace('/login')
+        }
     }
 
     return (
-        <Button 
-            variant='contained' 
-            color='secondary' 
+        <Button
+            variant='contained'
+            color='secondary'
             startIcon={<LogoutRounded />}
             onClick={logout}
         >
-            Sair
+            {(textButton) ? textButton : 'Sair'}
         </Button>
     )
 }
