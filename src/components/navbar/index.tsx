@@ -1,7 +1,8 @@
 'use client'
+import { getSession } from 'next-auth/react'
 import Image from 'next/image'
 import Link from 'next/link'
-import * as React from 'react'
+import { useEffect, useState } from 'react'
 import {
     AppBar,
     Box,
@@ -19,22 +20,19 @@ import { LogoutButton } from '../logoutButton'
 
 import logo from '../../.././public/cefis-white-logo.png'
 
-//Traduções do yup
-import '../../services/yup/TranslationsYup'
-
 interface IPageProps {
     page: string;
     href: string;
 }
 
 const pages: IPageProps[] = [
-    { page: 'Home', href: '/' },
+    { page: 'Home', href: '/home' },
     { page: 'Usuários', href: '/users' },
     { page: 'Cursos', href: '/courses' }
 ]
 
 export const Navbar = () => {
-    const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null)
+    const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget)
@@ -43,6 +41,23 @@ export const Navbar = () => {
     const handleCloseNavMenu = () => {
         setAnchorElNav(null)
     }
+
+    //name do user autenticado na sessão
+    const [userName, setUserName] = useState<string>('')
+
+    useEffect(() => {
+        const fetchSessionUser = async () => {
+            //Pegando o name do user autenticado
+            const session = await getSession()
+
+            //Pegando apenas a primeira parte do name e adicionando ao state
+            if (session?.user.name) {
+                setUserName(session.user.name.split(' ')[0])
+            }
+        }
+
+        fetchSessionUser()
+    }, [])
 
     return (
         <AppBar position="fixed">
@@ -150,7 +165,7 @@ export const Navbar = () => {
                     </Box>
 
                     <Box sx={{ flexGrow: 0 }}>
-                        <LogoutButton/>
+                        <LogoutButton textButton={userName}/>
                     </Box>
                 </Toolbar>
             </Container>
