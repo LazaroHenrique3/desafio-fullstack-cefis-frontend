@@ -1,7 +1,7 @@
 'use client'
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-
+import { getSession } from 'next-auth/react'
 import {
     Box,
     Grid,
@@ -14,6 +14,7 @@ import { CourseService, IListCourse } from '@/services/api/course/CourseService'
 import { Loading } from '@/components/loading'
 import { EnvironmentValues } from '@/environment'
 import SearchSection from '@/components/searchSection'
+import { TUserRole } from '@/services/api/user/UserService'
 
 const Home = () => {
     const [courses, setCourses] = useState<IListCourse[]>([])
@@ -24,10 +25,19 @@ const Home = () => {
     //Armazena o texto a ser pesquisado e sempre que é modificado aciona o useEffect
     const [searchText, setSearchText] = useState<string>('')
 
+    //Amazenando informações do user da sessão
+    const [userName, setUserName] = useState<string>('')
+    const [userType, setUserType] = useState<TUserRole | ''>('')
+
     const router = useRouter()
 
     useEffect(() => {
         const fetchData = async () => {
+            //Pegando as informações da sessão
+            const session = await getSession()
+            setUserName(session?.user.name || '')
+            setUserType(session?.user.typeUser || '')
+
             const coursesData = await CourseService.listCourse(page, searchText)
             setIsLoading(false)
 
@@ -45,7 +55,7 @@ const Home = () => {
     return (
         <Box width='100%' textAlign='center' padding={3} paddingTop={5}>
             <Typography variant='h5' marginBottom={5}>
-                BEM-VINDO AO FUTURO DO CONHECIMENTO
+                Seja bem-vindo, {(userType === 'TEACHER') ? 'Professor(a) ' : ' '} {userName}!
             </Typography>
 
             <Typography variant='h6' color='secondary' fontWeight='600' marginBottom={5}>
