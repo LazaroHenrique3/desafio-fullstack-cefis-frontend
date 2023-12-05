@@ -1,6 +1,6 @@
 'use client'
-import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime'
 import * as yup from 'yup'
+import { useRouter } from 'next/navigation'
 
 //Toast notification
 import { toast } from 'react-toastify'
@@ -22,10 +22,10 @@ interface IUseHandleCourseProps {
     setName: (name: string) => void
     formRef: React.RefObject<FormHandles>
     id: string
-    router: AppRouterInstance
 }
 
-export const UseHandleCourse = ({ setIsLoading, setName, formRef, id, router }: IUseHandleCourseProps) => {
+export const UseHandleCourse = ({ setIsLoading, setName, formRef, id }: IUseHandleCourseProps) => {
+    const router = useRouter()
 
     const handleSave = async (data: IFormData) => {
         try {
