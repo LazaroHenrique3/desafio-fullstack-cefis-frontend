@@ -23,10 +23,13 @@ export interface IUserWithPassword extends IDetailUser {
 
 //Interface que representa os valores retornados no login
 export interface IUserSignInResponse {
-    name: string,
-    email: string,
-    typeUser: string,
-    accessToken: string
+    user: {
+        id: number,
+        name: string,
+        email: string,
+        typeUser: string,
+    },
+    token: string
 }
 
 type IUserTotalCount = {
