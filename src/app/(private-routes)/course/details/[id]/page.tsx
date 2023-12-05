@@ -42,6 +42,7 @@ const CourseDetails = () => {
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true)
+           
             const resultCourse = await CourseService.getCourseById(Number(id))
 
             setIsLoading(false)
@@ -81,7 +82,7 @@ const CourseDetails = () => {
                                     variant="contained"
                                     color="secondary"
                                     sx={{ width: '80px' }}
-                                    onClick={() => router.push('/')}
+                                    onClick={() => router.push('/home')}
                                 >
                                     Voltar
                                 </Button>
@@ -90,10 +91,7 @@ const CourseDetails = () => {
 
                         {/* Seção de listagem de perguntas e respostas */}
                         <Divider />
-                        <QuestionsAndResponsesSection 
-                            idCourse={Number(id)}
-                            nameTeacher={course.teacher.name} 
-                            idTeacher={course.teacherId}/>
+                        <QuestionsAndResponsesSection idCourse={Number(id)} idTeacher={course.teacherId}/>
                     </>
                 )}
             </Box>
