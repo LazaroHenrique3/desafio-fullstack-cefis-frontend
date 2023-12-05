@@ -14,13 +14,14 @@ interface IUseHandleCourseProps {
     setQuestions: (questions: IDetailQuestion[]) => void
     questions: IDetailQuestion[]
     idCourse: number
+    idStudent: number
     formRef: React.RefObject<FormHandles>
 }
 
 /* A principal motivação de criar esses hooks personalizados é separar o código JS do .tsx ao máximo. Além
 de passar os principais, states e setstate de forma global, já que se eu tivesse o varios handles aqui, todos 
 teriam acesso aos states e handle states que são passados na criação do CustomHook*/
-export const UseHandleQuestion = ({ setIsLoading, setQuestions, questions, idCourse, formRef}: IUseHandleCourseProps) => {
+export const UseHandleQuestion = ({ setIsLoading, setQuestions, questions, idCourse, idStudent, formRef}: IUseHandleCourseProps) => {
 
     const handleSave = async (data: IFormData) => {
         try {
@@ -29,7 +30,7 @@ export const UseHandleQuestion = ({ setIsLoading, setQuestions, questions, idCou
             setIsLoading(true)
 
             //Irá retornar a pergunta criada
-            const result = await QuestionService.createQuestion({idCourse, ...validateData})
+            const result = await QuestionService.createQuestion({idCourse, idStudent, ...validateData})
             setIsLoading(false)
 
             if (result instanceof Error) {
