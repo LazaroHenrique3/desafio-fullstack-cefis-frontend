@@ -43,7 +43,6 @@ const Course = () => {
         setIsLoading,
         setName, formRef,
         id: Array.isArray(id) ? id[0] : id as string,
-        router
     })
 
     useEffect(() => {
