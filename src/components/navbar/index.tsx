@@ -15,6 +15,8 @@ import {
 } from '@mui/material'
 import MenuIcon from '@mui/icons-material/Menu'
 
+import { LogoutButton } from '../logoutButton'
+
 import logo from '../../.././public/cefis-white-logo.png'
 
 //Traduções do yup
@@ -145,6 +147,10 @@ export const Navbar = () => {
                                 </Button>
                             </Link>
                         ))}
+                    </Box>
+
+                    <Box sx={{ flexGrow: 0 }}>
+                        <LogoutButton/>
                     </Box>
                 </Toolbar>
             </Container>
