@@ -1,6 +1,7 @@
 'use client'
-import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import {
     Box,
     Card,
@@ -9,26 +10,35 @@ import {
     CardActions,
     Button,
     Typography,
-    Link
 } from '@mui/material'
 
 import { CircularProgress } from '@mui/material'
-import { 
-    VForm, 
-    VTextField, 
-    VTextFieldPassword, 
-    useVForm 
+import {
+    VForm,
+    VTextField,
+    VTextFieldPassword,
+    useVForm
 } from '@/components/forms'
 
 import { UseHandleLogin } from './hooks/customHooks'
 
 const Login = () => {
-    const router = useRouter()
+    //No retorno da página registerUser pode ser que seja passado o email
+    const searchParams = useSearchParams()
+    const search = searchParams.get('email')
 
     const [isLoading, setIsLoading] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
 
     const { formRef } = useVForm('formRef')
+
+    //Verifico se foi passado algum email via params e adiciono no input
+    useEffect(() => {
+        formRef.current?.setData({
+            email: (search !== null) ? search : '',
+        })
+    }, [])
+
 
     //Hooks personalizados
     const { handleLogin } = UseHandleLogin({ setIsLoading, formRef })
@@ -79,7 +89,7 @@ const Login = () => {
                 </VForm>
 
                 <Box width='100%' display='flex' justifyContent='center'>
-                    <Link variant="body2" onClick={() => router.push('/userRegister')}>
+                    <Link href={'/registerUser'}>
                         Crie sua conta gratuitamente
                     </Link>
                 </Box>
