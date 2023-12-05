@@ -14,15 +14,18 @@ import { VForm, VTextField, useVForm } from '@/components/forms'
 import { UseHandleResponse } from './hooks/customHooks'
 import { IDetailResponse } from '@/services/api/response/ResponseService'
 import { CommentComponent } from '../commentComponent'
+import { TUserRole } from '@/services/api/user/UserService'
 
 interface IResponseSectionProps {
     questionResponses: IDetailResponse[]
     idQuestion: number
-    idTeacher: number
-    nameTeacher: string
+    idTeacher: number // Se refere ao id do user(Professor) que criou o curso
+    idUser: number //Se refere ao id do user na sessão
+    nameUser: string //Se refere ao name do user na sessão
+    typeUser: TUserRole //Se refere ao tipo do user na sessão
 }
 
-export const ResponseSection: React.FC<IResponseSectionProps> = ({ questionResponses, idQuestion, idTeacher, nameTeacher }) => {
+export const ResponseSection: React.FC<IResponseSectionProps> = ({ questionResponses, idQuestion, idTeacher, idUser, nameUser, typeUser }) => {
     const { formRef } = useVForm('formRef')
 
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -35,7 +38,7 @@ export const ResponseSection: React.FC<IResponseSectionProps> = ({ questionRespo
         setIsLoading,
         setResponses,
         idQuestion,
-        idTeacher,
+        idUser,
         responses,
         formRef,
     })
@@ -50,34 +53,37 @@ export const ResponseSection: React.FC<IResponseSectionProps> = ({ questionRespo
 
             {(isShowResponses) && (
                 <>
-                    <VForm ref={formRef} onSubmit={handleSave}>
-                        <Box margin={1} display='flex' flexDirection='column' component={Paper} variant='outlined'>
-                            <Grid container direction='column' padding={2} spacing={2}>
-                                {isLoading && (
-                                    <Grid item>
-                                        <LinearProgress variant='indeterminate' color='secondary' />
-                                    </Grid>
-                                )}
+                    {/* Só renderiza a opção de cadastrar respostas se o usuário for professor e o curso for dele */}
+                    {(typeUser === 'TEACHER' && idTeacher === idUser) && (
+                        <VForm ref={formRef} onSubmit={handleSave}>
+                            <Box margin={1} display='flex' flexDirection='column' component={Paper} variant='outlined'>
+                                <Grid container direction='column' padding={2} spacing={2}>
+                                    {isLoading && (
+                                        <Grid item>
+                                            <LinearProgress variant='indeterminate' color='secondary' />
+                                        </Grid>
+                                    )}
 
-                                <Grid container item direction='row' spacing={2}>
-                                    <Grid item xs={12} sm={12} md={6} lg={4} xl={4}>
-                                        <VTextField fullWidth label='Resposta' name='response_text' size='small' disabled={isLoading} />
-                                    </Grid>
+                                    <Grid container item direction='row' spacing={2}>
+                                        <Grid item xs={12} sm={12} md={6} lg={4} xl={4}>
+                                            <VTextField fullWidth label='Resposta' name='response_text' size='small' disabled={isLoading} />
+                                        </Grid>
 
-                                    <Grid item xs={12} sm={12} md={6} lg={4} xl={4}>
-                                        <Button
-                                            variant="contained"
-                                            color="secondary"
-                                            sx={{ width: '150px' }}
-                                            type='submit'
-                                        >
-                                            Responder
-                                        </Button>
+                                        <Grid item xs={12} sm={12} md={6} lg={4} xl={4}>
+                                            <Button
+                                                variant="contained"
+                                                color="secondary"
+                                                sx={{ width: '150px' }}
+                                                type='submit'
+                                            >
+                                                Responder
+                                            </Button>
+                                        </Grid>
                                     </Grid>
                                 </Grid>
-                            </Grid>
-                        </Box>
-                    </VForm>
+                            </Box>
+                        </VForm>
+                    )}
 
                     {/* Listagem de respostas */}
                     {(responses.length === 0) ? (
@@ -89,8 +95,9 @@ export const ResponseSection: React.FC<IResponseSectionProps> = ({ questionRespo
                             </Typography>
                             <Divider />
 
+                            {/* Renderiza de fato as respostas do professor */}
                             {responses.map((response) => (
-                                <CommentComponent key={response.id} labelName='Professor' name={nameTeacher} text={response.response_text} />
+                                <CommentComponent key={response.id} labelName='Professor' name={nameUser} text={response.response_text} />
                             ))}
                         </Box>
                     )}
