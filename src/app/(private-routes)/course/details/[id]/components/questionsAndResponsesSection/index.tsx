@@ -1,4 +1,6 @@
+'use client'
 import { useEffect, useState } from 'react'
+import { getSession } from 'next-auth/react'
 import {
     Box,
     Typography,
@@ -16,24 +18,36 @@ import { IDetailQuestion, QuestionService } from '@/services/api/question/Questi
 import { Loading } from '@/components/loading'
 import { CreateQuestionSection } from '../createQuestionSection'
 import { EnvironmentValues } from '@/environment'
+import { TUserRole } from '@/services/api/user/UserService'
 
 interface IListQuestionsSection {
     idCourse: number
-    nameTeacher: string
-    idTeacher: number
+    idTeacher: number //Se refere ao id do user(Professor) que criou o curso
 }
 
-export const QuestionsAndResponsesSection: React.FC<IListQuestionsSection> = ({ idCourse, nameTeacher, idTeacher }) => {
-
+export const QuestionsAndResponsesSection: React.FC<IListQuestionsSection> = ({ idCourse, idTeacher }) => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [questions, setQuestions] = useState<IDetailQuestion[]>([])
     const [totalCount, setTotalCount] = useState<number>(0)
     const [page, setPage] = useState<number>(1)
 
+    //Informações do user autenticado na sessão
+    const [nameUser, setNameUser] = useState<string>()
+    const [typeUser, setTypeUser] = useState<TUserRole>()
+    const [idUser, setIdUser] = useState<number>()
+
     /* Buscando todas as perguntas vinculadas ao curso */
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true)
+
+            //Pegando o tipo do user autenticado
+            const session = await getSession()
+            setNameUser(session?.user.name)
+            setTypeUser(session?.user.typeUser)
+            setIdUser(session?.user.id)
+
+            //Buscando as perguntas do curso
             const resultQuestions = await QuestionService.listQuestion(idCourse, page)
 
             setIsLoading(false)
@@ -52,8 +66,10 @@ export const QuestionsAndResponsesSection: React.FC<IListQuestionsSection> = ({ 
 
     return (
         <Box width='100%' marginTop={3}>
-            {/* Seção de criação de novas perguntas */}
-            <CreateQuestionSection questions={questions} setQuestions={setQuestions} idCourse={idCourse} />
+            {/* Seção de criação de novas perguntas, só deve ser apresentada a user do tipo STUDENT */}
+            {(typeUser && idUser && typeUser === 'STUDENT') && (
+                <CreateQuestionSection questions={questions} setQuestions={setQuestions} idStudent={idUser} idCourse={idCourse} />
+            )}
 
             <Box margin={1}>
                 <Typography variant='h5'>
@@ -87,11 +103,15 @@ export const QuestionsAndResponsesSection: React.FC<IListQuestionsSection> = ({ 
                                             text={question.question_text} />
 
                                         {/* Renderiza na tela as respectivas respostas de cada pergunta, caso for selecionado pelo usuario */}
-                                        <ResponseSection
-                                            idQuestion={question.id}
-                                            questionResponses={question.Response}
-                                            nameTeacher={nameTeacher}
-                                            idTeacher={idTeacher} />
+                                        {(nameUser && idUser && typeUser) && (
+                                            <ResponseSection
+                                                idQuestion={question.id}
+                                                questionResponses={question.Response}
+                                                nameUser={nameUser}
+                                                idUser={idUser}
+                                                typeUser={typeUser}
+                                                idTeacher={idTeacher} />
+                                        )}
                                     </Box>
                                 ))}
 
