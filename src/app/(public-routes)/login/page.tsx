@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 import {
     Box,
     Card,
@@ -22,6 +23,8 @@ import {
 import { UseHandleLogin } from './hooks/customHooks'
 
 const Login = () => {
+    const router = useRouter()
+
     const [isLoading, setIsLoading] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
 
@@ -76,8 +79,8 @@ const Login = () => {
                 </VForm>
 
                 <Box width='100%' display='flex' justifyContent='center'>
-                    <Link variant="body2" onClick={() => console.log('')}>
-                        Esqueci minha senha
+                    <Link variant="body2" onClick={() => router.push('/userRegister')}>
+                        Crie sua conta gratuitamente
                     </Link>
                 </Box>
 
