@@ -12,7 +12,6 @@ import { Loading } from '@/components/loading'
 import { BasePageLayout } from '../BasePageLayout'
 import { NoRegistersList } from '@/components/noRegistersList'
 import { UserTable } from './components/userTable'
-import { EnvironmentValues } from '@/environment'
 
 const Users = () => {
     const [rows, setRows] = useState<IListUser[]>([])
@@ -37,7 +36,7 @@ const Users = () => {
 
                 //Em resumo eu quero que se o usuário logado for aluno liste professores, caso seja professor liste alunos
                 typeUserForListing = (session.user.typeUser === 'STUDENT') ? 'TEACHER' : 'STUDENT'
-            }
+            } 
 
             const rowsData = await UserService.listUser(page, '', 'desc', false, typeUserForListing)
             setIsLoading(false)
@@ -61,16 +60,12 @@ const Users = () => {
             ) : totalCount === 0 ? (
                 <NoRegistersList />
             ) : (
-                <>
-                    {totalCount}
-                    {`LIMIT: ${EnvironmentValues.LINE_LIMIT}`}
-                    <UserTable
-                        setPage={setPage}
-                        page={page}
-                        totalCount={totalCount}
-                        rows={rows}
-                    />
-                </>
+                <UserTable
+                    setPage={setPage}
+                    page={page}
+                    totalCount={totalCount}
+                    rows={rows}
+                />
             )}
         </BasePageLayout>
     )
