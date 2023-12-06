@@ -19,7 +19,7 @@ interface IUseHandleCourseProps {
 }
 
 
-export const UseHandleResponse = ({ setIsLoading, setResponses, responses, idQuestion, idUser, formRef}: IUseHandleCourseProps) => {
+export const UseHandleResponse = ({ setIsLoading, setResponses, responses, idQuestion, idUser, formRef }: IUseHandleCourseProps) => {
 
     const handleSave = async (data: IFormData) => {
         try {
@@ -28,7 +28,7 @@ export const UseHandleResponse = ({ setIsLoading, setResponses, responses, idQue
             setIsLoading(true)
 
             //Irá retornar a resposta criada
-            const result = await ResponseService.createResponse(idUser, {idQuestion, ...validateData})
+            const result = await ResponseService.createResponse(idUser, { idQuestion, ...validateData })
             setIsLoading(false)
 
             if (result instanceof Error) {
@@ -57,6 +57,25 @@ export const UseHandleResponse = ({ setIsLoading, setResponses, responses, idQue
         }
     }
 
-    return { handleSave }
+    const handleDelete = async (idResponse: number) => {
+        if (confirm('Realmente deseja apagar esta resposta?')) {
+            setIsLoading(true)
+            
+            const result = await ResponseService.deleteResponse(idResponse)
+            setIsLoading(false)
+
+            if (result instanceof Error) {
+                toast.error(result.message)
+                return
+            }
+
+            const newResponses = responses.filter(response => response.id !== idResponse)
+
+            setResponses(newResponses)
+            toast.success('Registro apagado com sucesso!')
+        }
+    }
+
+    return { handleSave, handleDelete }
 }
 

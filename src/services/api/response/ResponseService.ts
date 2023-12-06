@@ -74,9 +74,21 @@ const createResponse = async (idTeacher: number, createData: Omit<IDetailRespons
 
     }
 }
+
+const deleteResponse = async (id: number): Promise<void | Error> => {
+
+    try {
+        await api.delete(`/responses/deleteResponse/${id}`)
+    } catch (error) {
+        console.error(error)
+        return new Error((error as ErrorResponse).response?.data?.errors?.default || 'Erro ao deletar registro.')
+    }
+
+}
  
 
 export const ResponseService = {
     listResponse,
-    createResponse
+    createResponse,
+    deleteResponse
 }

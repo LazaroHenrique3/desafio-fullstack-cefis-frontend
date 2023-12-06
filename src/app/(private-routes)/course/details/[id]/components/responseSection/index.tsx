@@ -34,7 +34,7 @@ export const ResponseSection: React.FC<IResponseSectionProps> = ({ questionRespo
     const [isShowResponses, setIsShowResponses] = useState<boolean>(false)
 
     //Hooks personalizados
-    const { handleSave } = UseHandleResponse({
+    const { handleSave, handleDelete } = UseHandleResponse({
         setIsLoading,
         setResponses,
         idQuestion,
@@ -97,7 +97,13 @@ export const ResponseSection: React.FC<IResponseSectionProps> = ({ questionRespo
 
                             {/* Renderiza de fato as respostas do professor */}
                             {responses.map((response) => (
-                                <CommentComponent key={response.id} labelName='Professor' name={nameTeacher} text={response.response_text} />
+                                <CommentComponent 
+                                    key={response.id} 
+                                    showDeleteButton={idTeacher === idUser}
+                                    handleDeleteButton={() => handleDelete(response.id)}
+                                    labelName='Professor' 
+                                    name={nameTeacher} 
+                                    text={response.response_text} />
                             ))}
                         </Box>
                     )}

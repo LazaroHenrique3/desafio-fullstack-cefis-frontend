@@ -86,7 +86,19 @@ const createQuestion = async (createData: Omit<IDetailQuestion, 'id' | 'student'
     }
 }
 
+const deleteQuestion = async (id: number): Promise<void | Error> => {
+
+    try {
+        await api.delete(`/questions/deleteQuestion/${id}`)
+    } catch (error) {
+        console.error(error)
+        return new Error((error as ErrorResponse).response?.data?.errors?.default || 'Erro ao deletar registro.')
+    }
+
+}
+
 export const QuestionService = {
     listQuestion,
-    createQuestion
+    createQuestion,
+    deleteQuestion
 }

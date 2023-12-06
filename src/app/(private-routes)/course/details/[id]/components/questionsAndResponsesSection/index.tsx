@@ -19,6 +19,7 @@ import { Loading } from '@/components/loading'
 import { CreateQuestionSection } from '../createQuestionSection'
 import { EnvironmentValues } from '@/environment'
 import { TUserRole } from '@/services/api/user/UserService'
+import { UseHandleQuestion } from './hooks/customHooks'
 
 interface IListQuestionsSection {
     idCourse: number
@@ -63,6 +64,14 @@ export const QuestionsAndResponsesSection: React.FC<IListQuestionsSection> = ({ 
         fetchData()
     }, [page])
 
+
+    //Hooks personalizados
+    const { handleDelete } = UseHandleQuestion({
+        setIsLoading,
+        setQuestions,
+        questions
+    })
+
     return (
         <Box width='100%' marginTop={3}>
             {/* Seção de criação de novas perguntas, só deve ser apresentada a user do tipo STUDENT */}
@@ -96,6 +105,8 @@ export const QuestionsAndResponsesSection: React.FC<IListQuestionsSection> = ({ 
                                     <Box key={question.id} component={Paper}>
                                         {/* Renderiza na tela as perguntas */}
                                         <CommentComponent
+                                            showDeleteButton={question.idStudent === idUser}
+                                            handleDeleteButton={() => handleDelete(question.id)}
                                             key={question.id}
                                             labelName='Aluno'
                                             name={question.student.name}
