@@ -16,7 +16,7 @@ export const LogoutButton: React.FC<ILogoutButtonProps> = ({ textButton }) => {
                 redirect: false
             })
 
-            router.replace('/login')
+            router.replace('/')
         }
     }
 

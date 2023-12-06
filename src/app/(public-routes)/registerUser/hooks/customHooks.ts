@@ -35,7 +35,7 @@ export const UseHandleUserRegister = ({ setIsLoading, formRef }: IUseLoginAdmin)
                 toast.error(result.message)
             } else {
                 toast.success('Registro salvo com sucesso!')
-                router.push(`/login?email=${data.email}`)
+                router.push(`/?email=${data.email}`)
             }
         } catch (errors) {
             const errorsYup: yup.ValidationError = errors as yup.ValidationError

@@ -76,7 +76,7 @@ export const UseHandleUser = ({ setIsLoading, setName, formRef, id }: IUseHandle
                 redirect: false
             })
 
-            router.replace('/login')
+            router.replace('/')
             toast.success('Registro apagado com sucesso!')
         }
     }

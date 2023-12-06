@@ -11,7 +11,7 @@ export default async function PrivateLayout({ children }: IPrivateLayoutProps) {
     const session = await getServerSession(nextAuthOptions)
 
     if (!session || session.user.typeUser !== 'TEACHER') {
-        redirect('/login')
+        redirect('/')
     }
 
     return (

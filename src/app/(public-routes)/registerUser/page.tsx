@@ -104,7 +104,7 @@ const RegisterUser = () => {
                 </VForm>
 
                 <Box width='100%' display='flex' justifyContent='center'>
-                    <Link href={'/login'}>
+                    <Link href={'/'}>
                         Voltar ao login
                     </Link>
                 </Box>
