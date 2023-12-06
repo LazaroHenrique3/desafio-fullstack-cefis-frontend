@@ -1,5 +1,6 @@
 'use client'
 import { useRouter } from 'next/navigation'
+import { getSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
 //Material 
 import {
@@ -28,7 +29,18 @@ const Courses = () => {
 
     useEffect(() => {
         const fetchData = async () => {
-            const rowsData = await CourseService.listCourse(page)
+            //Para pegar as informações da sessão
+            const session = await getSession()
+
+            let idUserForListing: number | null = null
+
+            //Pegando o id do user logado
+            if (session?.user.id) {
+                //Como essa página só vai ser acessada por professores, quero buscar os cursos dele para ele realizar o gerenciamento
+                idUserForListing = session?.user.id
+            }
+
+            const rowsData = await CourseService.listCourse(page, '', 'desc', idUserForListing)
             setIsLoading(false)
 
             if (rowsData instanceof Error) {
@@ -47,7 +59,7 @@ const Courses = () => {
 
     return (
         <BasePageLayout
-            title="Cursos"
+            title="Meus Cursos"
             linkButton={
                 <Button
                     variant="contained"

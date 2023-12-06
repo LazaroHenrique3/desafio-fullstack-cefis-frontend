@@ -19,17 +19,12 @@ import MenuIcon from '@mui/icons-material/Menu'
 import { LogoutButton } from '../logoutButton'
 
 import logo from '../../.././public/cefis-white-logo.png'
+import { TUserRole } from '@/services/api/user/UserService'
 
 interface IPageProps {
     page: string;
     href: string;
 }
-
-const pages: IPageProps[] = [
-    { page: 'Home', href: '/home' },
-    { page: 'Usuários', href: '/users' },
-    { page: 'Cursos', href: '/courses' }
-]
 
 export const Navbar = () => {
     const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null)
@@ -44,21 +39,36 @@ export const Navbar = () => {
 
     //name do user autenticado na sessão
     const [userName, setUserName] = useState<string>('')
+    const [userId, setUserId] = useState<number>()
+    const [typeUser, setTypeUser] = useState<TUserRole>()
 
     useEffect(() => {
         const fetchSessionUser = async () => {
             //Pegando o name do user autenticado
             const session = await getSession()
 
-            //Pegando apenas a primeira parte do name e adicionando ao state
-            if (session?.user.name) {
-                setUserName(session.user.name.split(' ')[0])
+            //Adicionando as informações do user da sessão dentro dos states
+            if (session?.user.name &&  session?.user.id && session?.user.typeUser) {
+                setUserName(session.user.name.split(' ')[0])//Pegando o primeiro nome
+                setUserId(session.user.id)
+                setTypeUser(session?.user.typeUser)
             }
         }
 
         fetchSessionUser()
     }, [])
 
+    const pages: IPageProps[] = [
+        { page: 'Home', href: '/home' },
+        { page: 'Meu perfil', href: `/user/${userId}` },
+        { page: `${(typeUser && typeUser === 'TEACHER') ? 'Alunos' : 'Professores'}`, href: '/users' }
+    ]
+
+    //Se for professor ele deve ter acesso a listagem dos seus próprios cursos
+    if(typeUser === 'TEACHER') {
+        pages.push({ page: 'Cursos', href: '/courses' })
+    }
+  
     return (
         <AppBar position="fixed">
             <Container maxWidth="xl">

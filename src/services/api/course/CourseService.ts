@@ -37,9 +37,9 @@ interface ErrorResponse {
     }
 }
 
-const listCourse = async (page = 1, filter = '', orderBy = 'desc' ): Promise<ICourseTotalCount | Error> => {
+const listCourse = async (page = 1, filter = '', orderBy = 'desc', teacherId: number | null = null ): Promise<ICourseTotalCount | Error> => {
     try {
-        const { data, headers } = await api.get(`/courses/listCourse?page=${page}&limit=${EnvironmentValues.LINE_LIMIT}&filter=${filter}&orderBy=${orderBy}`)
+        const { data, headers } = await api.get(`/courses/listCourse?page=${page}&limit=${EnvironmentValues.LINE_LIMIT}&filter=${filter}&orderBy=${orderBy}${teacherId !== null ? `&teacherId=${teacherId}` : ''} `)
 
         if (data) {
             return {

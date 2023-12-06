@@ -1,6 +1,4 @@
-import { AppRouterInstance } from 'next/dist/shared/lib/app-router-context.shared-runtime'
 import { 
-    IconButton,
     Pagination,
     Paper,
     Table,
@@ -10,8 +8,6 @@ import {
     TableHead,
     TableRow
 } from '@mui/material'
-import EditIcon from '@mui/icons-material/Edit'
-import DeleteIcon from '@mui/icons-material/Delete'
 
 import { 
     StyledTableCell, 
@@ -27,25 +23,23 @@ interface IUserTableProps {
     page: number
     totalCount: number
     rows: IListUser[]
-    handleDelete: (id: number, title: string) => void
-    router: AppRouterInstance
 }
 
-export const UserTable: React.FC<IUserTableProps>  = ({setPage, page, totalCount, rows, handleDelete, router}) => {
+export const UserTable: React.FC<IUserTableProps>  = ({setPage, page, totalCount, rows}) => {
     return (
         <TableContainer component={Paper}>
             <Table sx={{ minWidth: 300 }} aria-label="customized table">
                 <TableHead>
                     <TableRow>
-                        <StyledTableCell size="small">ID</StyledTableCell>
+                        <StyledTableCell size="small" sx={{ width: 30 }}>ID</StyledTableCell>
                         <StyledTableCell size="small" align="left">
                             Nome
                         </StyledTableCell>
                         <StyledTableCell size="small" align="left">
-                            Tipo
+                            E-mail
                         </StyledTableCell>
                         <StyledTableCell size="small" align="left">
-                            Ações
+                            Tipo
                         </StyledTableCell>
                     </TableRow>
                 </TableHead>
@@ -59,15 +53,10 @@ export const UserTable: React.FC<IUserTableProps>  = ({setPage, page, totalCount
                                 {row.name}
                             </StyledTableCell>
                             <StyledTableCell size="small" align="left">
-                                {convertUserRole(row.role)}
+                                {row.email}
                             </StyledTableCell>
                             <StyledTableCell size="small" align="left">
-                                <IconButton color="error" onClick={() => handleDelete(row.id, row.name)}>
-                                    <DeleteIcon />
-                                </IconButton>
-                                <IconButton color="primary" onClick={() => router.push(`/user/${row.id}`)}>
-                                    <EditIcon />
-                                </IconButton>
+                                {convertUserRole(row.role)}
                             </StyledTableCell>
                         </StyledTableRow>
                     ))}

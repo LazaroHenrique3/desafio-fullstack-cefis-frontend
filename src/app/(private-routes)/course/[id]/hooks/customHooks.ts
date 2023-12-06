@@ -11,9 +11,7 @@ import { FormHandles } from '@unform/core'
 
 import { 
     IFormData, 
-    IFormDataUpdate, 
-    formatValidationCreateSchema,
-    formatValidationUpdateSchema
+    formatValidationSchema,
 } from '../validation/Schemas'
 import { CourseService } from '@/services/api/course/CourseService'
 
@@ -22,26 +20,21 @@ interface IUseHandleCourseProps {
     setName: (name: string) => void
     formRef: React.RefObject<FormHandles>
     id: string
+    idUser: number
 }
 
-export const UseHandleCourse = ({ setIsLoading, setName, formRef, id }: IUseHandleCourseProps) => {
+export const UseHandleCourse = ({ setIsLoading, setName, formRef, id, idUser }: IUseHandleCourseProps) => {
     const router = useRouter()
 
     const handleSave = async (data: IFormData) => {
         try {
-            let validateData: IFormData | IFormDataUpdate
-
-            if(id === 'new'){
-                validateData = await formatValidationCreateSchema.validate(data, { abortEarly: false })
-            } else {
-                validateData = await formatValidationUpdateSchema.validate(data, { abortEarly: false })
-            }
-
+            const validateData = await formatValidationSchema.validate(data, { abortEarly: false })
+    
             setIsLoading(true)
 
             //Significa que é alteração
             if (id === 'new') {
-                const result = await CourseService.createCourse(validateData as IFormData)
+                const result = await CourseService.createCourse({teacherId: idUser, ...validateData})
                 setIsLoading(false)
 
                 if (result instanceof Error) {

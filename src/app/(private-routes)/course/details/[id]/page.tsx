@@ -91,7 +91,7 @@ const CourseDetails = () => {
 
                         {/* Seção de listagem de perguntas e respostas */}
                         <Divider />
-                        <QuestionsAndResponsesSection idCourse={Number(id)} idTeacher={course.teacherId}/>
+                        <QuestionsAndResponsesSection idCourse={Number(id)} idTeacher={course.teacherId} nameTeacher={course.teacher.name}/>
                     </>
                 )}
             </Box>

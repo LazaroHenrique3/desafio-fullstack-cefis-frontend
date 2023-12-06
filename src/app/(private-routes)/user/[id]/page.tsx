@@ -16,7 +16,6 @@ import 'react-toastify/dist/ReactToastify.css'
 import { BasePageLayout } from '@/app/(private-routes)/BasePageLayout'
 import {
     VForm,
-    VSelect,
     VTextField,
     useVForm
 } from '@/components/forms'
@@ -39,44 +38,34 @@ const User = () => {
     const router = useRouter()
 
     //hooks personalizados
-    const { handleSave } = UseHandleUser({
+    const { handleSave, handleDelete } = UseHandleUser({
         setIsLoading,
         setName, formRef,
-        id: Array.isArray(id) ? id[0] : id as string,
+        id: Array.isArray(id) ? Number(id[0]) : Number(id)
     })
 
     useEffect(() => {
         const fetchData = async () => {
-            //Siginifica que alteração
-            if (id !== 'new') {
-                setIsLoading(true)
-                const result = await UserService.getUserById(Number(id))
+            setIsLoading(true)
+            const result = await UserService.getUserById(Number(id))
 
-                setIsLoading(false)
+            setIsLoading(false)
 
-                if (result instanceof Error) {
-                    toast.error(result.message)
-                    router.push('/users')
-                    return
-                }
-
-                setName(result.name)
-                formRef.current?.setData(result)
-            } else {
-                formRef.current?.setData({
-                    name: '',
-                    role: ''
-                })
+            if (result instanceof Error) {
+                toast.error(result.message)
+                router.push('/home')
+                return
             }
 
-            return
+            setName(result.name)
+            formRef.current?.setData(result)
         }
 
         fetchData()
     }, [])
 
     return (
-        <BasePageLayout title={id === 'new' ? 'Novo usuário' : name}>
+        <BasePageLayout title={name}>
 
             <VForm ref={formRef} onSubmit={handleSave}>
                 <Box margin={1} display='flex' flexDirection='column' component={Paper} variant='outlined'>
@@ -84,7 +73,7 @@ const User = () => {
                     <Grid container direction='column' padding={2} spacing={2}>
                         {isLoading && (
                             <Grid item>
-                                <LinearProgress variant='indeterminate' color='secondary'/>
+                                <LinearProgress variant='indeterminate' color='secondary' />
                             </Grid>
                         )}
 
@@ -93,40 +82,45 @@ const User = () => {
                                 <VTextField fullWidth label='Nome' name='name' disabled={isLoading} />
                             </Grid>
 
-                            {(id === 'new') && (
-                                <Grid item xs={12} sm={12} md={6} lg={3} xl={3}>
-                                    <VSelect
-                                        fullWidth
-                                        label='Tipo'
-                                        name='role'
-                                        options={[
-                                            { value: 'STUDENT', label: 'Aluno' },
-                                            { value: 'TEACHER', label: 'Professor' },
-                                        ]}
-                                        disabled={isLoading} />
-                                </Grid>
-                            )}
+                            <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
+                                <VTextField fullWidth type='email' label='Email' name='email' disabled={isLoading} />
+                            </Grid>
+
+                            <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
+                            </Grid>
                         </Grid>
 
                     </Grid>
 
                 </Box>
 
-                <Box margin={1} display='flex' gap={5} padding={2} component={Paper} variant='outlined'>
+                <Box margin={1} display='flex' flexWrap='wrap' gap={1} padding={2} component={Paper} variant='outlined'>
                     <Button
                         variant="contained"
                         color="secondary"
                         sx={{ width: '150px' }}
                         type='submit'
+                        disabled={isLoading}
                     >
                         Salvar
+                    </Button>
+
+                    <Button
+                        variant="contained"
+                        color="error"
+                        sx={{ width: '150px' }}
+                        disabled={isLoading}
+                        onClick={handleDelete}
+                    >
+                        Deletar
                     </Button>
 
                     <Button
                         variant="outlined"
                         color="primary"
                         sx={{ width: '150px' }}
-                        onClick={() => router.push('/users')}
+                        onClick={() => router.push('/home')}
+                        disabled={isLoading}
                     >
                         Voltar
                     </Button>

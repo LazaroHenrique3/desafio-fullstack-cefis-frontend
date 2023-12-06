@@ -1,20 +1,15 @@
 'use client'
-import { useRouter } from 'next/navigation'
+import { getSession } from 'next-auth/react'
 import { useEffect, useState } from 'react'
-//Material 
-import {
-    Button,
-} from '@mui/material'
 //Services
 import {
     IListUser,
+    TUserRole,
     UserService
 } from '@/services/api/user/UserService'
 import { Loading } from '@/components/loading'
 
-import { UseHandleUser } from './hooks/customHooks'
 import { BasePageLayout } from '../BasePageLayout'
-import { AddCircleOutline } from '@mui/icons-material'
 import { NoRegistersList } from '@/components/noRegistersList'
 import { UserTable } from './components/userTable'
 
@@ -24,11 +19,26 @@ const Users = () => {
     const [totalCount, setTotalCount] = useState<number>(0)
     const [page, setPage] = useState<number>(1)
 
-    const router = useRouter()
+    //Tipo do user logado
+    const [typeUser, setTypeUser] = useState<TUserRole | ''>('')
 
     useEffect(() => {
         const fetchData = async () => {
-            const rowsData = await UserService.listUser(page)
+            //Para pegar as informações da sessão
+            const session = await getSession()
+
+            let typeUserForListing: TUserRole | '' = ''
+
+            //Pegando o type do user logado
+            if (session?.user.typeUser) {
+                //Adicionando ao state para ser usado psoteriormente
+                setTypeUser(session?.user.typeUser)
+
+                //Em resumo eu quero que se o usuário logado for aluno liste professores, caso seja professor liste alunos
+                typeUserForListing = (session.user.typeUser === 'STUDENT') ? 'TEACHER' : 'STUDENT'
+            } 
+
+            const rowsData = await UserService.listUser(page, '', 'desc', false, typeUserForListing)
             setIsLoading(false)
 
             if (rowsData instanceof Error) {
@@ -42,24 +52,9 @@ const Users = () => {
         fetchData()
     }, [page])
 
-    //hooks personalizados
-    const { handleDelete } = UseHandleUser({ setRows, rows, setTotalCount, totalCount })
-
     return (
-        <BasePageLayout
-            title="Usuários"
-            linkButton={
-                <Button
-                    variant="contained"
-                    color="secondary"
-                    sx={{ width: '100px' }}
-                    startIcon={<AddCircleOutline />}
-                    onClick={() => router.push('/user/new')}
-                >
-                    Novo
-                </Button>
-            }
-        >
+        <BasePageLayout title={(typeUser === 'STUDENT') ? 'Professores' : 'Alunos'}>
+
             {isLoading ? (
                 <Loading />
             ) : totalCount === 0 ? (
@@ -70,8 +65,6 @@ const Users = () => {
                     page={page}
                     totalCount={totalCount}
                     rows={rows}
-                    handleDelete={handleDelete}
-                    router={router}
                 />
             )}
         </BasePageLayout>

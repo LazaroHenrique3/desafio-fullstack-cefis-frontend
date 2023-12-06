@@ -1,6 +1,7 @@
 'use client'
 import * as yup from 'yup'
 import { useRouter } from 'next/navigation'
+import { signOut } from 'next-auth/react'
 
 //Toast notification
 import { toast } from 'react-toastify'
@@ -9,10 +10,8 @@ import 'react-toastify/dist/ReactToastify.css'
 import { IVFormErrors } from '@/components/forms'
 import { FormHandles } from '@unform/core'
 
-import { 
-    IFormData, 
-    IFormDataUpdate, 
-    formatValidationCreateSchema,
+import {
+    IFormDataUpdate,
     formatValidationUpdateSchema
 } from '../validation/Schemas'
 import { UserService } from '@/services/api/user/UserService'
@@ -21,47 +20,31 @@ interface IUseHandleUserProps {
     setIsLoading: (status: boolean) => void
     setName: (name: string) => void
     formRef: React.RefObject<FormHandles>
-    id: string
+    id: number
 }
 
 export const UseHandleUser = ({ setIsLoading, setName, formRef, id }: IUseHandleUserProps) => {
     const router = useRouter()
-    
-    const handleSave = async (data: IFormData) => {
+
+    const handleSave = async (data: IFormDataUpdate) => {
         try {
-            let validateData: IFormData | IFormDataUpdate
-
-            if(id === 'new'){
-                validateData = await formatValidationCreateSchema.validate(data, { abortEarly: false })
-            } else {
-                validateData = await formatValidationUpdateSchema.validate(data, { abortEarly: false })
-            }
-
+            //Validando os dados recebidos do VForm
+            const validateData = await formatValidationUpdateSchema.validate(data, { abortEarly: false })
             setIsLoading(true)
 
-            //Significa que é alteração
-            if (id === 'new') {
-                const result = await UserService.createUser(validateData as IFormData)
-                setIsLoading(false)
+            //Chamando o service de user, para fazer a alteraão
+            const result = await UserService.updateUser(Number(id), { id: Number(id), ...validateData })
+            setIsLoading(false)
 
-                if (result instanceof Error) {
-                    toast.error(result.message)
-                } else {
-                    toast.success('Registro salvo com sucesso!')
-                    router.push('/users')
-                }
-            } else {
-                const result = await UserService.updateUser(Number(id), { id: Number(id), ...validateData })
-                setIsLoading(false)
-
-                if (result instanceof Error) {
-                    toast.error(result.message)
-                    return
-                }
-
-                toast.success('Registro salvo com sucesso!')
-                setName(data.name)
+            if (result instanceof Error) {
+                toast.error(result.message)
+                return
             }
+
+            //TODO: Atualizar o session
+
+            toast.success('Registro salvo com sucesso!')
+            setName(data.name)
         } catch (errors) {
 
             const errorsYup: yup.ValidationError = errors as yup.ValidationError
@@ -77,6 +60,27 @@ export const UseHandleUser = ({ setIsLoading, setName, formRef, id }: IUseHandle
         }
     }
 
-    return { handleSave }
+    const handleDelete = async () => {
+
+        if (confirm('Realmente deseja excluir sua conta?')) {
+            const result = await UserService.deleteUser(id)
+
+            if (result instanceof Error) {
+                console.log('Veio no erro?')
+                toast.error(result.message)
+                return
+            }
+
+            //Ao apagar eu tenho que deslogar ele do sistema
+            await signOut({
+                redirect: false
+            })
+
+            router.replace('/login')
+            toast.success('Registro apagado com sucesso!')
+        }
+    }
+
+    return { handleSave, handleDelete }
 }
 

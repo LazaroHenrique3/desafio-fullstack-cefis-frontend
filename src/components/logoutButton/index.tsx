@@ -11,9 +11,7 @@ export const LogoutButton: React.FC<ILogoutButtonProps> = ({ textButton }) => {
     const router = useRouter()
 
     async function logout() {
-        const confirmLogout = confirm('Realmente deseja sair?')
-
-        if (confirmLogout) {
+        if (confirm('Realmente deseja sair?')) {
             await signOut({
                 redirect: false
             })

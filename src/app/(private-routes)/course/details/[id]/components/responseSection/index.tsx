@@ -21,11 +21,11 @@ interface IResponseSectionProps {
     idQuestion: number
     idTeacher: number // Se refere ao id do user(Professor) que criou o curso
     idUser: number //Se refere ao id do user na sessão
-    nameUser: string //Se refere ao name do user na sessão
+    nameTeacher: string //Se refere ao name do user dono do curso
     typeUser: TUserRole //Se refere ao tipo do user na sessão
 }
 
-export const ResponseSection: React.FC<IResponseSectionProps> = ({ questionResponses, idQuestion, idTeacher, idUser, nameUser, typeUser }) => {
+export const ResponseSection: React.FC<IResponseSectionProps> = ({ questionResponses, idQuestion, idTeacher, idUser, nameTeacher, typeUser }) => {
     const { formRef } = useVForm('formRef')
 
     const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -97,7 +97,7 @@ export const ResponseSection: React.FC<IResponseSectionProps> = ({ questionRespo
 
                             {/* Renderiza de fato as respostas do professor */}
                             {responses.map((response) => (
-                                <CommentComponent key={response.id} labelName='Professor' name={nameUser} text={response.response_text} />
+                                <CommentComponent key={response.id} labelName='Professor' name={nameTeacher} text={response.response_text} />
                             ))}
                         </Box>
                     )}

@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import { useParams, useRouter } from 'next/navigation'
+import { getSession } from 'next-auth/react'
 import {
     Box,
     Button,
@@ -21,11 +22,9 @@ import {
 } from '@/components/forms'
 
 import { CourseService } from '@/services/api/course/CourseService'
-import { VAutoCompleteTeacher } from './components/VAutoCompleteTeacher'
 import { UseHandleCourse } from './hooks/customHooks'
 
 const Course = () => {
-
     const { formRef } = useVForm('formRef')
 
     //Pegando o id da url
@@ -38,15 +37,18 @@ const Course = () => {
     //Tratar redirecionamentos
     const router = useRouter()
 
-    //hooks personalizados
-    const { handleSave } = UseHandleCourse({
-        setIsLoading,
-        setName, formRef,
-        id: Array.isArray(id) ? id[0] : id as string,
-    })
+    //id do user logado
+    const [idUser, setIdUser] = useState<number>(0)
 
     useEffect(() => {
         const fetchData = async () => {
+            //Para pegar as informações da sessão
+            const session = await getSession()
+
+            if (session?.user.id) {
+                setIdUser(session.user.id)
+            }
+
             //Siginifica que alteração
             if (id !== 'new') {
                 setIsLoading(true)
@@ -66,7 +68,6 @@ const Course = () => {
                 formRef.current?.setData({
                     tile: '',
                     duration: '',
-                    teacherId: ''
                 })
             }
 
@@ -75,6 +76,14 @@ const Course = () => {
 
         fetchData()
     }, [])
+
+    //hooks personalizados
+    const { handleSave } = UseHandleCourse({
+        setIsLoading,
+        setName, formRef,
+        id: Array.isArray(id) ? id[0] : id as string,
+        idUser: idUser
+    })
 
     return (
         <BasePageLayout title={id === 'new' ? 'Novo curso' : name}>
@@ -97,12 +106,6 @@ const Course = () => {
                             <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
                                 <VTextField fullWidth type='number' label='Duração' name='duration' disabled={isLoading} />
                             </Grid>
-
-                            {(id === 'new') && (
-                                <Grid item xs={12} sm={12} md={6} lg={3} xl={3}>
-                                    <VAutoCompleteTeacher isExternalLoading={isLoading} />
-                                </Grid>
-                            )}
                         </Grid>
 
                     </Grid>

@@ -23,16 +23,16 @@ import { TUserRole } from '@/services/api/user/UserService'
 interface IListQuestionsSection {
     idCourse: number
     idTeacher: number //Se refere ao id do user(Professor) que criou o curso
+    nameTeacher: string //Se refere ao nome do professor dono do curso
 }
 
-export const QuestionsAndResponsesSection: React.FC<IListQuestionsSection> = ({ idCourse, idTeacher }) => {
+export const QuestionsAndResponsesSection: React.FC<IListQuestionsSection> = ({ idCourse, idTeacher, nameTeacher }) => {
     const [isLoading, setIsLoading] = useState<boolean>(false)
     const [questions, setQuestions] = useState<IDetailQuestion[]>([])
     const [totalCount, setTotalCount] = useState<number>(0)
     const [page, setPage] = useState<number>(1)
 
     //Informações do user autenticado na sessão
-    const [nameUser, setNameUser] = useState<string>()
     const [typeUser, setTypeUser] = useState<TUserRole>()
     const [idUser, setIdUser] = useState<number>()
 
@@ -43,7 +43,6 @@ export const QuestionsAndResponsesSection: React.FC<IListQuestionsSection> = ({ 
 
             //Pegando o tipo do user autenticado
             const session = await getSession()
-            setNameUser(session?.user.name)
             setTypeUser(session?.user.typeUser)
             setIdUser(session?.user.id)
 
@@ -103,11 +102,11 @@ export const QuestionsAndResponsesSection: React.FC<IListQuestionsSection> = ({ 
                                             text={question.question_text} />
 
                                         {/* Renderiza na tela as respectivas respostas de cada pergunta, caso for selecionado pelo usuario */}
-                                        {(nameUser && idUser && typeUser) && (
+                                        {(idUser && typeUser) && (
                                             <ResponseSection
                                                 idQuestion={question.id}
                                                 questionResponses={question.Response}
-                                                nameUser={nameUser}
+                                                nameTeacher={nameTeacher}
                                                 idUser={idUser}
                                                 typeUser={typeUser}
                                                 idTeacher={idTeacher} />
