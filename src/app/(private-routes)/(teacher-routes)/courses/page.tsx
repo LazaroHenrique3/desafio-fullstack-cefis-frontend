@@ -14,7 +14,7 @@ import {
 import { Loading } from '@/components/loading'
 
 import { UseHandleCourse } from './hooks/customHooks'
-import { BasePageLayout } from '../BasePageLayout'
+import { BasePageLayout } from '../../BasePageLayout'
 import { AddCircleOutline } from '@mui/icons-material'
 import { NoRegistersList } from '@/components/noRegistersList'
 import { CourseTable } from './components/courseTable'

@@ -66,11 +66,7 @@ export const QuestionsAndResponsesSection: React.FC<IListQuestionsSection> = ({ 
 
 
     //Hooks personalizados
-    const { handleDelete } = UseHandleQuestion({
-        setIsLoading,
-        setQuestions,
-        questions
-    })
+    const { handleDelete } = UseHandleQuestion({ setIsLoading, setQuestions, questions, setTotalCount, totalCount })
 
     return (
         <Box width='100%' marginTop={3}>
