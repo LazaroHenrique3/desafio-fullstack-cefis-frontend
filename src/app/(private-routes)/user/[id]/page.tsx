@@ -4,6 +4,8 @@ import { useParams, useRouter } from 'next/navigation'
 import {
     Box,
     Button,
+    Checkbox,
+    FormControlLabel,
     Grid,
     LinearProgress,
     Paper
@@ -17,6 +19,7 @@ import { BasePageLayout } from '@/app/(private-routes)/BasePageLayout'
 import {
     VForm,
     VTextField,
+    VTextFieldPassword,
     useVForm
 } from '@/components/forms'
 
@@ -34,12 +37,18 @@ const User = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [name, setName] = useState('')
 
+    //Tratar a questão de senha na alteração
+    const [isAlterPassword, setIsAlterPassword] = useState(false)
+    const [showPassword, setShowPassword] = useState(false)
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+
     //Tratar redirecionamentos
     const router = useRouter()
 
     //hooks personalizados
     const { handleSave, handleDelete } = UseHandleUser({
         setIsLoading,
+        setIsAlterPassword,
         setName, formRef,
         id: Array.isArray(id) ? Number(id[0]) : Number(id)
     })
@@ -85,10 +94,41 @@ const User = () => {
                             <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
                                 <VTextField fullWidth type='email' label='Email' name='email' disabled={isLoading} />
                             </Grid>
-
-                            <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
-                            </Grid>
                         </Grid>
+
+                        <Grid container item direction='row' spacing={2}>
+
+                            <Grid item xs={12} sm={12} md={6} lg={5} xl={5}>
+                                <FormControlLabel control={<Checkbox checked={isAlterPassword} onChange={() => setIsAlterPassword(!isAlterPassword)} />} label='Alterar senha' />
+                            </Grid>
+
+                        </Grid>
+
+                        {isAlterPassword && (
+                            <Grid container item direction='row' spacing={2}>
+
+                                <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
+                                    <VTextFieldPassword
+                                        fullWidth
+                                        name='password'
+                                        label='Senha'
+                                        disabled={isLoading}
+                                        showPassword={showPassword}
+                                        handleClickShowPassword={setShowPassword} />
+                                </Grid>
+
+                                <Grid item xs={12} sm={12} md={6} lg={4} xl={2}>
+                                    <VTextFieldPassword
+                                        fullWidth
+                                        name='confirmPassword'
+                                        label='Confirmar Senha'
+                                        disabled={isLoading}
+                                        showPassword={showConfirmPassword}
+                                        handleClickShowPassword={setShowConfirmPassword} />
+                                </Grid>
+
+                            </Grid>
+                        )}
 
                     </Grid>
 

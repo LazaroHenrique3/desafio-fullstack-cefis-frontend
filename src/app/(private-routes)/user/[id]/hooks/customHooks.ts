@@ -18,12 +18,13 @@ import { UserService } from '@/services/api/user/UserService'
 
 interface IUseHandleUserProps {
     setIsLoading: (status: boolean) => void
+    setIsAlterPassword: (isAlter: boolean) => void
     setName: (name: string) => void
     formRef: React.RefObject<FormHandles>
     id: number
 }
 
-export const UseHandleUser = ({ setIsLoading, setName, formRef, id }: IUseHandleUserProps) => {
+export const UseHandleUser = ({ setIsLoading, setIsAlterPassword, setName, formRef, id }: IUseHandleUserProps) => {
     const router = useRouter()
 
     const handleSave = async (data: IFormDataUpdate) => {
@@ -43,8 +44,9 @@ export const UseHandleUser = ({ setIsLoading, setName, formRef, id }: IUseHandle
 
             //TODO: Atualizar o session
 
-            toast.success('Registro salvo com sucesso!')
+            setIsAlterPassword(false)
             setName(data.name)
+            toast.success('Registro salvo com sucesso!')
         } catch (errors) {
 
             const errorsYup: yup.ValidationError = errors as yup.ValidationError
