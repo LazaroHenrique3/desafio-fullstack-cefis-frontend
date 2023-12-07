@@ -41,6 +41,8 @@ Renomeie o `.env.local.example` para `.env.local` e adicione os valores necessá
 Se estiver utilizando as configurações sugeridas na API, o seu `.env.local` ficará semelhante a isso:
  ```sh
    NEXT_PUBLIC_API_URL_BASE=http://localhost:5000
+   NEXTAUTH_URL=http://localhost:3000
+   NEXTAUTH_SECRET=coloqueaquialgumhashoustringqualquer
    ```
 
 4 - Inicialize a aplicação
