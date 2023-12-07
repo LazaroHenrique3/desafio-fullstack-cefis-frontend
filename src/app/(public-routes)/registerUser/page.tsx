@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import {
     Box,
@@ -22,6 +23,8 @@ import {
 
 import { UseHandleUserRegister } from './hooks/customHooks'
 
+import logo from '../../../.././public/cefis-logo.png'
+
 const RegisterUser = () => {
     const [isLoading, setIsLoading] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
@@ -39,9 +42,13 @@ const RegisterUser = () => {
                     <CardContent>
                         <Box display='flex' flexDirection='column' gap={3} width={250}>
 
-                            <Typography variant='h4' align='center'>
-                                CADASTRO
-                            </Typography>
+                            <Box display='flex' alignItems='center' flexDirection='column' gap={1}>
+                                <Image alt='logo-cefis' src={logo} height={60} />
+
+                                <Typography variant='h4' align='center'>
+                                    CADASTRO
+                                </Typography>
+                            </Box>
 
                             <VTextField
                                 fullWidth

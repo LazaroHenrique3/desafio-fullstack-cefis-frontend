@@ -1,5 +1,6 @@
 'use client'
 import { useEffect, useState } from 'react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import {
@@ -21,6 +22,8 @@ import {
 } from '@/components/forms'
 
 import { UseHandleLogin } from './hooks/customHooks'
+
+import logo from '../../../.././public/cefis-logo.png'
 
 const Login = () => {
     //No retorno da página registerUser pode ser que seja passado o email
@@ -50,10 +53,13 @@ const Login = () => {
 
                     <CardContent>
                         <Box display='flex' flexDirection='column' gap={3} width={250}>
+                            <Box display='flex' alignItems='center' flexDirection='column' gap={1}>
+                                <Image alt='logo-cefis' src={logo} height={60} />
 
-                            <Typography variant='h4' align='center'>
-                                LOGIN
-                            </Typography>
+                                <Typography variant='h4' align='center'>
+                                    LOGIN
+                                </Typography>
+                            </Box>
 
                             <VTextField
                                 fullWidth
