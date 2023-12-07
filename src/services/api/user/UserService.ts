@@ -74,6 +74,7 @@ const listUser = async (page = 1, filter = '', orderBy = 'desc', noLimit = false
         const { data, headers } = await api.get(`/users/listUser?page=${page}&limit=${limit}&filter=${filter}&orderBy=${orderBy}&typeUser=${typeUser}`)
 
         if (data) {
+            console.log('Testando: ', headers['x-total-count'])
             return {
                 data,
                 totalCount: Number(headers['x-total-count'] || EnvironmentValues.LINE_LIMIT)
