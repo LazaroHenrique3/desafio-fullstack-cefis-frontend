@@ -134,7 +134,7 @@ const User = () => {
 
                 </Box>
 
-                <Box margin={1} display='flex' flexWrap='wrap' gap={1} padding={2} component={Paper} variant='outlined'>
+                <Box margin={1} display='flex' justifyContent='center' flexWrap='wrap' gap={2} padding={2} component={Paper} variant='outlined'>
                     <Button
                         variant="contained"
                         color="secondary"
